@@ -4,6 +4,7 @@ from pathlib import Path
 from sparrow import Database
 from sparrow.import_helpers import SparrowImportError, working_directory
 from .import_data import import_datafile
+import os
 
 @command()
 def cli(stop_on_error=False, verbose=False):
@@ -23,6 +24,7 @@ def cli(stop_on_error=False, verbose=False):
     db = Database()
 
     # Temporary
+    print("Removing old data")
     db.engine.execute("TRUNCATE TABLE datum CASCADE;")
     db.engine.execute("TRUNCATE TABLE datum_type CASCADE;")
     db.engine.execute("TRUNCATE TABLE analysis CASCADE;")
@@ -32,4 +34,5 @@ def cli(stop_on_error=False, verbose=False):
     files = path.glob("**/*_simplified.xlsx")
     files = (i for i in files if not i.stem.startswith('~$'))
     for f in files:
+        print(f)
         import_datafile(db,f)
