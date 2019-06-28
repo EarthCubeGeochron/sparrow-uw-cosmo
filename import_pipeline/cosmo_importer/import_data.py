@@ -89,15 +89,13 @@ class CosmoImporter(BaseImporter):
         self.db.session.add(analysis)
         return analysis
 
-def import_datafile(db, fn):
+    def import_datafile(self, fn, redo=False):
+        input = read_excel(fn, sheet_name=0, index_col=0, header=0)
+        output = read_excel(fn, sheet_name=1, index_col=0, header=0)
+        df = input.join(output, rsuffix="out").reset_index()
+        for ix, row in df.iterrows():
+            self.import_row(row)
 
-    input = read_excel(fn, sheet_name=0, index_col=0, header=0)
-    output = read_excel(fn, sheet_name=1, index_col=0, header=0)
-
-    df = input.join(output, rsuffix="out").reset_index()
-
-    importer = CosmoImporter(db)
-    for ix, row in df.iterrows():
-        importer.import_row(row)
-
-    return True
+    def import_all(self, files, redo=False):
+        self.redo = redo
+        self.iterfiles(files)
