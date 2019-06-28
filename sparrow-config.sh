@@ -10,7 +10,7 @@ export COMPOSE_PROJECT_NAME="UWCosmo"
 
 pipeline="$cosmo/import_pipeline"
 
-export SPARROW_DATA_DIR="$cosmo/Sparrow/import-pipelines/cosmo/test-data"
+export SPARROW_DATA_DIR="$cosmo/test-data"
 
 # For now, we keep importer in main repository
 export SPARROW_COMMANDS="$pipeline/bin"
