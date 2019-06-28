@@ -5,5 +5,5 @@ import {GLMap} from 'plugins/gl-map'
 
 export default {
   landingText: h Markdown, {src: aboutText}
-  siteTitle: 'Boise State IGL'
+  siteTitle: 'Wisconsin Cosmo'
 }
