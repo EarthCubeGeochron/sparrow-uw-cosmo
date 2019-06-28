@@ -21,13 +21,11 @@ def cli(stop_on_error=False, verbose=False):
     path = Path(env)
     assert path.is_dir()
 
-    import IPython; IPython.embed(); raise
-    print(env)
-    return
+    #return
 
     db = Database()
 
-    # Temporary
+    #Temporary
     print("Removing old data")
     db.engine.execute("TRUNCATE TABLE datum CASCADE;")
     db.engine.execute("TRUNCATE TABLE datum_type CASCADE;")
@@ -36,7 +34,8 @@ def cli(stop_on_error=False, verbose=False):
     db.engine.execute("TRUNCATE TABLE sample CASCADE;")
 
     files = path.glob("**/*_simplified.xlsx")
-    files = (i for i in files if not i.stem.startswith('~$'))
     for f in files:
+        if f.stem.startswith('~$'):
+            continue
         print(f)
         import_datafile(db,f)
