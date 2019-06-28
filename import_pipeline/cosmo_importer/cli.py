@@ -20,6 +20,10 @@ def cli(stop_on_error=False, verbose=False):
     path = Path(env)
     assert path.is_dir()
 
+    import IPython; IPython.embed(); raise
+    print(env)
+    return
+
     db = Database()
 
     # Temporary
