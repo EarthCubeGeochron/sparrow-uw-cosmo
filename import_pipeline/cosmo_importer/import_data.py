@@ -35,7 +35,7 @@ class CosmoImporter(BaseImporter):
 
         self.db.session.commit()
 
-    # Split this function into 3, each for Be10, Al and Pb
+    # Be and Al importer
     def measured_parameters(self, session, row):
         nuclide = "Be10"
 
@@ -62,10 +62,19 @@ class CosmoImporter(BaseImporter):
         val = self.datum(analysis,"Erosion", v)
         dc.append(val)
 
-        v = row.loc['10Be-conc(at/g)']
-        e = row.loc['10Be-unc(at/g)']
-        val = self.datum(analysis, 'Be-concent', v, error=e, unit='at/g')
-        dc.append(val)
+        v_be = row.loc['10Be-conc(at/g)']
+        e_be = row.loc['10Be-unc(at/g)']
+        v_al = row.loc['26Al-conc(at/g)']
+        e_al = row.loc['26Al-unc(at/g)']
+        if v_al == 0:
+            val = self.datum(analysis, 'Be-concent', v_be, error=e_be, unit='at/g')
+            dc.append(val)
+        else:
+            val = self.datum(analysis, 'Be-concent', v_be, error=e_be, unit='at/g')
+            dc.append(val)
+            val = self.datum(analysis, 'Al-content', v_al, error=e_al, unit='at/g')
+            dc.append(val)
+
 
         analysis._session = session
         return analysis
