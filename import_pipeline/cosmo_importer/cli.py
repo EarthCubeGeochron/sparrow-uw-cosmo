@@ -33,7 +33,7 @@ def cli(stop_on_error=False, verbose=False):
     db.engine.execute("TRUNCATE TABLE session CASCADE;")
     db.engine.execute("TRUNCATE TABLE sample CASCADE;")
 
-    files = path.glob("**/*_simplified.xlsx")
+    files = path.glob("**/*.xlsx")
     for f in files:
         if f.stem.startswith('~$'):
             continue
