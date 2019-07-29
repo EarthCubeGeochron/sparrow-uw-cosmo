@@ -75,6 +75,7 @@ class CosmoImporter(BaseImporter):
             val = self.datum(analysis, 'Al-content', v_al, error=e_al, unit='at/g')
             dc.append(val)
 
+        analysis.datum_collection = dc
 
         analysis._session = session
         return analysis
