@@ -37,7 +37,11 @@ class CosmoImporter(BaseImporter):
 
     # Be and Al importer
     def measured_parameters(self, session, row):
-        nuclide = "Be10"
+        
+        if row.loc['26Al-conc(at/g)'] == 0:
+            nuclide = "Be10"
+        else:
+            nuclide = "Be10 and 26Al"
 
         analysis = self.models.analysis(
             analysis_type='Sample measurements',
