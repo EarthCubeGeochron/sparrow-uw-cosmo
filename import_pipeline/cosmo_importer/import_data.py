@@ -37,11 +37,11 @@ class CosmoImporter(BaseImporter):
 
     # Be and Al importer
     def measured_parameters(self, session, row):
-        
+
         if row.loc['26Al-conc(at/g)'] == 0:
             nuclide = "Be10"
         else:
-            nuclide = "Be10 and 26Al"
+            nuclide = "Be10 and Al26"
 
         analysis = self.models.analysis(
             analysis_type='Sample measurements',
@@ -59,11 +59,11 @@ class CosmoImporter(BaseImporter):
         dc.append(val)
 
         v = row.loc['Shield']
-        val = self.datum(analysis,"Shielding", v)
+        val = self.datum(analysis,"Shielding", v, unit='--')
         dc.append(val)
 
         v = row.loc['Erosion']
-        val = self.datum(analysis,"Erosion", v)
+        val = self.datum(analysis,"Erosion", v, unit='--')
         dc.append(val)
 
         v_be = row.loc['10Be-conc(at/g)']
@@ -77,6 +77,19 @@ class CosmoImporter(BaseImporter):
             val = self.datum(analysis, 'Be-concent', v_be, error=e_be, unit='at/g')
             dc.append(val)
             val = self.datum(analysis, 'Al-content', v_al, error=e_al, unit='at/g')
+            dc.append(val)
+
+        age_be = row.loc['Publ-10-age(yr)']
+        age_be_unc = row.loc['Publ-10-unc(yr)']
+        age_al = row.loc['Publ-26-age(yr)']
+        age_al_unc = row.loc['Publ-26-unc(yr)']
+        if age_al == 0:
+            val = self.datum(analysis, 'Publ-Be10-Age', age_be, error=age_be_unc, unit='years')
+            dc.append(val)
+        else:
+            val = self.datum(analysis, 'Publ-Be10-Age', age_be, error=age_be_unc, unit='years')
+            dc.append(val)
+            val = self.datum(analysis, 'Publ-Al26-Age', age_al, error=age_al_unc, unit='years')
             dc.append(val)
 
         analysis.datum_collection = dc
