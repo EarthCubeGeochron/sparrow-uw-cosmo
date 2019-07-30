@@ -59,11 +59,11 @@ class CosmoImporter(BaseImporter):
         dc.append(val)
 
         v = row.loc['Shield']
-        val = self.datum(analysis,"Shielding", v, unit='--')
+        val = self.datum(analysis,"Shielding", v)
         dc.append(val)
 
         v = row.loc['Erosion']
-        val = self.datum(analysis,"Erosion", v, unit='--')
+        val = self.datum(analysis,"Erosion", v)
         dc.append(val)
 
         v_be = row.loc['10Be-conc(at/g)']
@@ -83,13 +83,20 @@ class CosmoImporter(BaseImporter):
         age_be_unc = row.loc['Publ-10-unc(yr)']
         age_al = row.loc['Publ-26-age(yr)']
         age_al_unc = row.loc['Publ-26-unc(yr)']
-        if age_al == 0:
-            val = self.datum(analysis, 'Publ-Be10-Age', age_be, error=age_be_unc, unit='years')
-            dc.append(val)
-        else:
+        if isinstance(age_be, int) and isinstance(age_al, int):
             val = self.datum(analysis, 'Publ-Be10-Age', age_be, error=age_be_unc, unit='years')
             dc.append(val)
             val = self.datum(analysis, 'Publ-Al26-Age', age_al, error=age_al_unc, unit='years')
+            dc.append(val)
+        elif isinstance(age_be, int):
+            val = self.datum(analysis, 'Publ-Be10-Age', age_be, error=age_be_unc, unit='years')
+            dc.append(val)
+            val = self.datum(analysis, 'Publ-Al26-Age', 0, error=0, unit='years')
+            dc.append(val)
+        else:
+            val = self.datum(analysis, 'Publ-Be10-Age', 0, error=0, unit='years')
+            dc.append(val)
+            val = self.datum(analysis, 'Publ-Al26-Age', 0, error=0, unit='years')
             dc.append(val)
 
         analysis.datum_collection = dc
