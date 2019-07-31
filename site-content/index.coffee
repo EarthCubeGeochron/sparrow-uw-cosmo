@@ -10,5 +10,5 @@ console.log(test)
 export default {
   landingText: h Markdown, {src: aboutText}
   siteTitle: 'Wisconsin Cosmo'
-  adminBase: h HTML, {src: test}
+  adminBase: h HTML, {src: test2}
 }
