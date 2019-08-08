@@ -41,8 +41,8 @@ function Map({ markersData }) {
     },
     [markersData]
   );
-  // put the map to the div with an id of "canvas"
-  return <div id="canvas" style={style} />;
+  // put the map to the div with an id of "map"
+  return <div id="map" style={style} />;
 }
 
 export default Map;

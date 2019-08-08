@@ -1,17 +1,25 @@
 import {Markdown, HTML} from '@macrostrat/ui-components'
 import aboutText from './about-the-lab.md'
-import test from './test-base.html'
 import h from 'react-hyperscript'
-import {GLMap} from 'plugins/gl-map'
+import Carto from './leaflet-map-component'
+import 'leaflet/dist/leaflet.css'
+
 #console.log(test)
 
 #=============React-leaflet does not work. If removed, the rest works.============
 # testmap.js: Leaflet code
 # test-base.js: render the React-leaflet to the <div id="map"></div> in the test-base.html
 
+###
+Steps to fix:
+1. create a package.json that allows Webpack to resolve this directory as a "module" -
+   that way, you can add your own dependencies such as webpack
+2. Stay within the react system! That is, load the map as a react object
+   _alongside_ your html rather than within it...
+###
 
 export default {
   landingText: h Markdown, {src: aboutText}
   siteTitle: 'Wisconsin Cosmo'
-  adminBase: h HTML, {src: test}
+  adminBase: h Carto
 }
