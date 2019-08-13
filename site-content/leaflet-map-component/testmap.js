@@ -1,9 +1,25 @@
 import React, { useEffect, useRef } from "react";
 import L from "leaflet";
+import 'leaflet/dist/leaflet.css'
+import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
+import iconUrl from 'leaflet/dist/images/marker-icon.png';
+import shadowUrl from 'leaflet/dist/images/marker-icon.png';
 
+// We have to do some surgery to get images in styles to work...
+// Fix described in https://github.com/PaulLeCam/react-leaflet/issues/255
+// We could use react-leaflet instead of leaflet directly, which would solve
+// a lot of these integration issues.
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+});
+
+// This style mostly takes the place of our custom css
 const style = {
   width: "100%",
-  height: "300px"
+  height: "500px"
 };
 
 function Map({ markersData }) {
@@ -41,8 +57,8 @@ function Map({ markersData }) {
     },
     [markersData]
   );
-  // put the map to the div with an id of "canvas"
-  return <div id="canvas" style={style} />;
+  // put the map to the div with an id of "map"
+  return <div id="map" style={style} />;
 }
 
 export default Map;
