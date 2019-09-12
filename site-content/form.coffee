@@ -42,9 +42,39 @@ Form = ->
     ]
     h FormGroup, {
       helperText: '0-500',
-      label: '<sup>9</sup>Be'
+      label: '9Be Carrier'
     }, [
       h InputGroup, {id: '9be-text-inout', placeholder: 'Quartz value'}
+    ]
+    h FormGroup, {
+      helperText: '1E-10 to 1E-20',
+      label: '10Be/9Be'
+    }, [
+      h InputGroup, {id: 'be-ratio-text-inout', placeholder: '10Be/9Be value'}
+    ]
+    h FormGroup, {
+      helperText: '1E-10 to 1E-20',
+      label: '1 Sigma'
+    }, [
+      h InputGroup, {id: '1sig-text-inout', placeholder: '1-sigma value'}
+    ]
+    h FormGroup, {
+      helperText: '0 to 1E-10, atoms/g',
+      label: '10Be'
+    }, [
+      h InputGroup, {id: '10be-text-inout', placeholder: '10Be value'}
+    ]
+    h FormGroup, {
+      helperText: '0 to 1E-10, atoms/g',
+      label: 'Uncertainty'
+    }, [
+      h InputGroup, {id: 'uncertainty-text-inout', placeholder: 'Uncertainty value'}
+    ]
+    h FormGroup, {
+      helperText: '0 - 700 ka',
+      label: '10Be Age'
+    }, [
+      h InputGroup, {id: '10be-age-text-inout', placeholder: 'Age value'}
     ]
   ]
 
