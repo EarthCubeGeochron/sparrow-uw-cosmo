@@ -25,7 +25,7 @@ def cli(stop_on_error=False, verbose=False):
 
     db = Database()
 
-    Temporary
+    #Temporary
     print("Removing old data")
     db.engine.execute("TRUNCATE TABLE datum CASCADE;")
     db.engine.execute("TRUNCATE TABLE datum_type CASCADE;")
