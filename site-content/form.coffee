@@ -23,18 +23,18 @@ Form = ->
     }, [
       h InputGroup, {id: 'lon-text-inout', placeholder: 'Lon value'}
     ]
-    h FormGroup, {
-      helperText: 'pick the date',
-      label: 'Date'
-    }, [
-      h DateInput, {
-        formatDate: {date => date.toLocaleString()}
-        onChange: {this.handleDateChange}
-        parseDate: {str => new Date(str)}
-        placeholder: {"MM/DD/YYYY"}
-        value: {this.state.date}
-      }
-    ]
+    # h FormGroup, {
+    #   helperText: 'pick the date',
+    #   label: 'Date'
+    # }, [
+    #   h DateInput, {
+    #     formatDate: {date => date.toLocaleString()}
+    #     onChange: {this.handleDateChange}
+    #     parseDate: {str => new Date(str)}
+    #     placeholder: {"MM/DD/YYYY"}
+    #     value: {this.state.date}
+    #   }
+    # ]
     h FormGroup, {
       helperText: 'in meters',
       label: 'Elevation'
