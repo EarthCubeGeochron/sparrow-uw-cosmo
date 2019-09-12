@@ -5,10 +5,16 @@ Form = ->
   h 'div.shan-form', [
     h 'h1', 'Form HI'
     h FormGroup, {
-      helperText: 'help',
+      helperText: 'help2',
       label: 'A test'
     }, [
       h InputGroup, {id: 'text-input', placeholder: 'value'}
+    ]
+    h FormGroup, {
+      helperText: 'help2',
+      label: 'A test2'
+    }, [
+      h InputGroup, {id: 'text-input2', placeholder: 'value'}
     ]
   ]
 
