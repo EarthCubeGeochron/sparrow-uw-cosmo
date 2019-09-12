@@ -16,8 +16,8 @@ function Carto() {
       {
         title: +lastMarker.title + 1,
         latLng: {
-          lat: map.getCenter()[0],
-          lng: map.getCenter()[1]
+          lat: map.getCenter().lat(),
+          lng: map.getCenter().lng()
         }
       }
     ]);
@@ -34,7 +34,7 @@ function Carto() {
         Markers data:
         {markersData.map(marker => (
           <li key={marker.title}>
-            {marker.title}, lat: {map.getCenter()[0]}, lng: {map.getCenter()[1]},
+            {marker.title}, lat: {marker.latLng.lat}, lng: {marker.latLng.lng},
           </li>
         ))}
       </ul>
