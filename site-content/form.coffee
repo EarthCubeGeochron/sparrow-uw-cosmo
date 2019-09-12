@@ -1,5 +1,6 @@
 import h from 'react-hyperscript'
 import {FormGroup, InputGroup} from '@blueprintjs/core'
+import { DateInput } from "@blueprintjs/datetime"
 
 Form = ->
   h 'div.shan-form', [
@@ -21,6 +22,18 @@ Form = ->
       label: 'Latitude'
     }, [
       h InputGroup, {id: 'lon-text-inout', placeholder: 'Lon value'}
+    ]
+    h FormGroup, {
+      helperText: 'pick the date',
+      label: 'Date'
+    }, [
+      h DateInput, {
+        formatDate: {date => date.toLocaleString()}
+        onChange: {this.handleDateChange}
+        parseDate: {str => new Date(str)}
+        placeholder: {"MM/DD/YYYY"}
+        value: {this.state.date}
+      }
     ]
     h FormGroup, {
       helperText: 'in meters',
