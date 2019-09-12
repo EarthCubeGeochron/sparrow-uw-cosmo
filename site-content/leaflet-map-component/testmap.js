@@ -12,8 +12,7 @@ import shadowUrl from 'leaflet/dist/images/marker-icon.png';
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl,
-  iconUrl,
-  shadowUrl,
+  iconUrl
 });
 
 // This style mostly takes the place of our custom css
@@ -27,8 +26,8 @@ function Map({ markersData }) {
   const mapRef = useRef(null);
   useEffect(() => {
     mapRef.current = L.map("map", {
-      center: [0,0],
-      zoom: 10,
+      center: [40,-90],
+      zoom: 4,
       layers: [
         L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}", {
           maxZoom: 15,

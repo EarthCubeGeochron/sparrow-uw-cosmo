@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css'
 
 function Carto() {
   const [markersData, setMarkersData] = useState([
-    { latLng: { lat: 0, lng: 0 }, title: 10 }
+    { latLng: { lat: 40, lng: -90 }, title: 1 }
   ]);
 
   function addMarker() {
@@ -16,8 +16,8 @@ function Carto() {
       {
         title: +lastMarker.title + 1,
         latLng: {
-          lat: lastMarker.latLng.lat + 0.0001,
-          lng: lastMarker.latLng.lng + 0.0001
+          lat: map.getCenter()[0],
+          lng: map.getCenter()[1]
         }
       }
     ]);
@@ -34,7 +34,7 @@ function Carto() {
         Markers data:
         {markersData.map(marker => (
           <li key={marker.title}>
-            {marker.title}, lat: {marker.latLng.lat}, lng: {marker.latLng.lng},
+            {marker.title}, lat: {map.getCenter()[0]}, lng: {map.getCenter()[1]},
           </li>
         ))}
       </ul>
