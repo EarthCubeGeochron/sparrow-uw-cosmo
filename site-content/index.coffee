@@ -2,6 +2,7 @@ import {Markdown, HTML} from '@macrostrat/ui-components'
 import aboutText from './about-the-lab.md'
 import h from 'react-hyperscript'
 import Carto from './leaflet-map-component'
+import Form from './form'
 import 'leaflet/dist/leaflet.css'
 
 #console.log(test)
@@ -18,8 +19,14 @@ Steps to fix:
    _alongside_ your html rather than within it...
 ###
 
+AdminBaseComponent = ->
+  h 'div', [
+    h Carto
+    h Form
+  ]
+
 export default {
   landingText: h Markdown, {src: aboutText}
   siteTitle: 'Wisconsin Cosmo'
-  adminBase: h Carto
+  adminBase: h AdminBaseComponent
 }

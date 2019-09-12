@@ -26,12 +26,12 @@ def cli(stop_on_error=False, verbose=False):
     db = Database()
 
     #Temporary
-    print("Removing old data")
-    db.engine.execute("TRUNCATE TABLE datum CASCADE;")
-    db.engine.execute("TRUNCATE TABLE datum_type CASCADE;")
-    db.engine.execute("TRUNCATE TABLE analysis CASCADE;")
-    db.engine.execute("TRUNCATE TABLE session CASCADE;")
-    db.engine.execute("TRUNCATE TABLE sample CASCADE;")
+    # print("Removing old data")
+    # db.engine.execute("TRUNCATE TABLE datum CASCADE;")
+    # db.engine.execute("TRUNCATE TABLE datum_type CASCADE;")
+    # db.engine.execute("TRUNCATE TABLE analysis CASCADE;")
+    # db.engine.execute("TRUNCATE TABLE session CASCADE;")
+    # db.engine.execute("TRUNCATE TABLE sample CASCADE;")
 
     files = path.glob("**/*.xlsx")
     for f in files:
