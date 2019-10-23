@@ -1,16 +1,25 @@
 import h from 'react-hyperscript'
 import {FormGroup, InputGroup} from '@blueprintjs/core'
-import { DateInput } from "@blueprintjs/datetime"
+import { DateInput, DatePicker, TimePrecision } from "@blueprintjs/datetime"
+import {Button} from '@blueprintjs/core'
 
 Form = ->
   h 'div.shan-form', [
-    h 'h1', 'Test Form'
+    h 'h1', '10Be Sample Data Input Form'
+    h 'h2', 'General information of the sample'
     h FormGroup, {
       helperText: 'Enter the sample name',
       label: 'Sample'
     }, [
       h InputGroup, {id: 'sample-text-input', placeholder: 'Sample text'}
     ]
+    h FormGroup, {
+      helperText: 'Enter the sample id',
+      label: 'Sample ID'
+    }, [
+      h InputGroup, {id: 'sample-id-input', placeholder: 'Sample ID'}
+    ]
+    h 'h2','Sample location'
     h FormGroup, {
       helperText: '-90 to 90 degrees',
       label: 'Latitude'
@@ -19,28 +28,33 @@ Form = ->
     ]
     h FormGroup, {
       helperText: '-180 to 180 degrees',
-      label: 'Latitude'
+      label: 'Longitude'
     }, [
       h InputGroup, {id: 'lon-text-inout', placeholder: 'Lon value'}
     ]
-    # h FormGroup, {
-    #   helperText: 'pick the date',
-    #   label: 'Date'
-    # }, [
-    #   h DateInput, {
-    #     formatDate: {date => date.toLocaleString()}
-    #     onChange: {this.handleDateChange}
-    #     parseDate: {str => new Date(str)}
-    #     placeholder: {"MM/DD/YYYY"}
-    #     value: {this.state.date}
-    #   }
-    # ]
+    h FormGroup, {
+      helperText: 'General location. e.g. Northern Wisconsin',
+      label: 'Location Name'
+    }, [
+      h InputGroup, {id: 'location-text-inout', placeholder: 'Location'}
+    ]
     h FormGroup, {
       helperText: 'in meters',
       label: 'Elevation'
     }, [
       h InputGroup, {id: 'elevation-text-inout', placeholder: 'Elevation value'}
     ]
+    h 'h2', 'The date that the sample is collected'
+    h DatePicker,{
+      #defaultValue: today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+      todayButtonText: 'today'
+    }
+    # h DateInput, {
+    #   formatDate: {date => date.toLocaleString()}
+    #   onChange: {this.handleDateChange}
+    #   parseDate: {str => new Date(str)}
+    # }
+    h 'h2', 'Sample analysis'
     h FormGroup, {
       helperText: '0-1',
       label: 'Shielding'
@@ -89,6 +103,17 @@ Form = ->
     }, [
       h InputGroup, {id: '10be-age-text-inout', placeholder: 'Age value'}
     ]
+    h FormGroup, {
+      helperText: 'Enter additional information',
+      label: 'Notes'
+    }, [
+      h InputGroup, {id: 'notes-text-inout', placeholder: 'Notes or comments'}
+    ]
+    h Button, {
+      active: 'False',
+      text: 'Submit'
+      #icon: 'document'
+    }
   ]
 
 export default Form

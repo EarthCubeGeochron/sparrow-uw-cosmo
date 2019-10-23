@@ -3,6 +3,7 @@ import aboutText from './about-the-lab.md'
 import h from 'react-hyperscript'
 import Carto from './leaflet-map-component'
 import Form from './form'
+#import Button from './button'
 import 'leaflet/dist/leaflet.css'
 
 #console.log(test)
@@ -23,6 +24,7 @@ AdminBaseComponent = ->
   h 'div', [
     h Carto
     h Form
+    #h Button
   ]
 
 export default {
