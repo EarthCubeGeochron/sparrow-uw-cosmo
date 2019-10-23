@@ -4,7 +4,7 @@ import { DateInput } from "@blueprintjs/datetime"
 
 Form = ->
   h 'div.shan-form', [
-    h 'h1', 'Form HI'
+    h 'h1', 'Test Form'
     h FormGroup, {
       helperText: 'Enter the sample name',
       label: 'Sample'

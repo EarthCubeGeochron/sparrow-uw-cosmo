@@ -3,7 +3,7 @@ import L from "leaflet";
 import 'leaflet/dist/leaflet.css'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
 import iconUrl from 'leaflet/dist/images/marker-icon.png';
-import shadowUrl from 'leaflet/dist/images/marker-icon.png';
+import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
 
 // We have to do some surgery to get images in styles to work...
 // Fix described in https://github.com/PaulLeCam/react-leaflet/issues/255
@@ -12,7 +12,8 @@ import shadowUrl from 'leaflet/dist/images/marker-icon.png';
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl,
-  iconUrl
+  iconUrl,
+  shadowUrl
 });
 
 // This style mostly takes the place of our custom css
@@ -21,7 +22,7 @@ const style = {
   height: "500px"
 };
 
-function Map({ markersData }) {
+function Map({ markersData, onMapMove }) {
   // Initiating the map
   const mapRef = useRef(null);
   useEffect(() => {
@@ -35,6 +36,11 @@ function Map({ markersData }) {
           attribution:'Tile Map &copy; Esri'
         })
       ]
+    });
+
+    mapRef.current.on('move', function(){
+      let latlng = mapRef.current.getCenter();
+      onMapMove(latlng);
     });
   }, []);
 
