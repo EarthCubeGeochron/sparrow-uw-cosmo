@@ -44,9 +44,9 @@ Form = ->
     }, [
       h InputGroup, {id: 'elevation-text-inout', placeholder: 'Elevation value'}
     ]
-    h 'h2', 'The date that the sample is collected'
+    h 'h2', 'Date of collecting'
     h DatePicker,{
-      #defaultValue: today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+      #defaultValue: {today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()},
       todayButtonText: 'today'
     }
     # h DateInput, {
