@@ -30,10 +30,10 @@ function Map({ markersData, onMapMove }) {
       center: [40,-90],
       zoom: 4,
       layers: [
-        L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}", {
+        L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}", {
           maxZoom: 15,
           minZoom: 3,
-          attribution:'Tile Map &copy; Esri'
+          attribution:'Tile Map &copy; Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China, TomTom, 2012'
         })
       ]
     });
