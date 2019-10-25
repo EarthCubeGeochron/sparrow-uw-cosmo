@@ -21,7 +21,10 @@ class Form extends Component
 
   render: ->
 
-  #  updater = (key) => (event) =>
+    #update every key into the json view
+    updater = (key) => (event) =>
+      newState = update @state, {formData:{[key]:{$set: event.target.value}}}
+      @setState(newState)
 
     h 'div.shan-form', [
       h 'h1', '10Be Sample Data Input Form'
@@ -36,9 +39,7 @@ class Form extends Component
           id: 'sample-text-input',
           placeholder: 'Sample text',
           value: @state.formData.sample_text,
-          onChange: (event) =>
-            newState = update @state, {formData:{sample_text:{$set: event.target.value}}}
-            @setState(newState)
+          onChange: updater('sample_text')
         }
       ]
       h FormGroup, {
@@ -49,9 +50,7 @@ class Form extends Component
           id: 'sample-id-input',
           placeholder: 'Sample ID'
           value: @state.formData.sample_id,
-          onChange: (event) =>
-            newState = update @state, {formData:{sample_id:{$set: event.target.value}}}
-            @setState(newState)
+          onChange: updater('sample_id')
         }
       ]
       h 'h2','Sample location'
@@ -59,25 +58,44 @@ class Form extends Component
         helperText: '-90 to 90 degrees',
         label: 'Latitude'
       }, [
-        h InputGroup, {id: 'lat-text-inout', placeholder: 'Lat value'}
+        h InputGroup, {
+          id: 'lat-text-inout',
+          placeholder: 'Lat value',
+          value: @state.formData.lat,
+          onChange: updater('lat')
+        }
       ]
       h FormGroup, {
         helperText: '-180 to 180 degrees',
         label: 'Longitude'
       }, [
-        h InputGroup, {id: 'lon-text-inout', placeholder: 'Lon value'}
+        h InputGroup, {
+          id: 'lon-text-inout',
+          placeholder: 'Lon value',
+          value: @state.formData.lon,
+          onChange:updater('lon')}
       ]
       h FormGroup, {
         helperText: 'General location. e.g. Northern Wisconsin',
         label: 'Location Name'
       }, [
-        h InputGroup, {id: 'location-text-inout', placeholder: 'Location'}
+        h InputGroup, {
+          id: 'location-text-inout',
+          placeholder: 'Location',
+          value: @state.formData.location,
+          onChange: updater('location')
+        }
       ]
       h FormGroup, {
         helperText: 'in meters',
         label: 'Elevation'
       }, [
-        h InputGroup, {id: 'elevation-text-inout', placeholder: 'Elevation value'}
+        h InputGroup, {
+          id: 'elevation-text-inout',
+          placeholder: 'Elevation value',
+          value: @state.formData.elevation,
+          onChange: updater('elevation')
+        }
       ]
       h 'h2', 'Date of collecting'
       h DatePicker,{
@@ -145,10 +163,14 @@ class Form extends Component
         h InputGroup, {id: 'notes-text-inout', placeholder: 'Notes or comments'}
       ]
       h Button, {
-        active: 'False',
-        text: 'Submit'
+        disabled: not @state.formData.lat?,
+        text: 'Submit',
+        onClick: @submitData
         #icon: 'document'
       }
     ]
+
+  submitData: ->
+    console.log "placeholder"
 
 export default Form
