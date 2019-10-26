@@ -115,7 +115,7 @@ class Form extends Component
         h InputGroup, {
           id: 'shielding-text-inout',
           placeholder: 'Shielding value'，
-          value: @state.formData.shielding，
+          value: @state.formData.shielding,
           onChange: updater('shielding')
         }
       ]
