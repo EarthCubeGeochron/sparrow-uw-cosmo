@@ -137,7 +137,7 @@ class Form extends Component
         h InputGroup, {
           id: '9be-text-inout',
           placeholder: 'Quartz value',
-          value: @state.formData._9Be
+          value: @state.formData._9Be,
           onChange: updater('_9Be')
         }
       ]
