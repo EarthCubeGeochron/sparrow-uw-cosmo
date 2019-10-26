@@ -112,55 +112,100 @@ class Form extends Component
         helperText: '0-1',
         label: 'Shielding'
       }, [
-        h InputGroup, {id: 'shielding-text-inout', placeholder: 'Shielding value'}
+        h InputGroup, {
+          id: 'shielding-text-inout',
+          placeholder: 'Shielding value'，
+          value: @state.formData.shielding，
+          onChange: updater('shielding')
+        }
       ]
       h FormGroup, {
         helperText: '0-100',
         label: 'Quartz'
       }, [
-        h InputGroup, {id: 'quartz-text-inout', placeholder: 'Quartz value'}
+        h InputGroup, {
+          id: 'quartz-text-inout',
+          placeholder: 'Quartz value',
+          value: @state.formData.quartz,
+          onChange: updater('quartz')
+        }
       ]
       h FormGroup, {
         helperText: '0-500',
         label: '9Be Carrier'
       }, [
-        h InputGroup, {id: '9be-text-inout', placeholder: 'Quartz value'}
+        h InputGroup, {
+          id: '9be-text-inout',
+          placeholder: 'Quartz value',
+          value: @state.formData._9Be
+          onChange: updater('_9Be')
+        }
       ]
       h FormGroup, {
         helperText: '1E-10 to 1E-20',
         label: '10Be/9Be'
       }, [
-        h InputGroup, {id: 'be-ratio-text-inout', placeholder: '10Be/9Be value'}
+        h InputGroup, {
+          id: 'be-ratio-text-inout',
+          placeholder: '10Be/9Be value',
+          value: @state.formData.Be_ratio,
+          onChange: updater('Be_ratio')
+        }
       ]
       h FormGroup, {
         helperText: '1E-10 to 1E-20',
         label: '1 Sigma'
       }, [
-        h InputGroup, {id: '1sig-text-inout', placeholder: '1-sigma value'}
+        h InputGroup, {
+          id: '1sig-text-inout',
+          placeholder: '1-sigma value',
+          value: @state.formData._1_sigma,
+          onChange: updater('_1_sigma')
+        }
       ]
       h FormGroup, {
         helperText: '0 to 1E-10, atoms/g',
         label: '10Be'
       }, [
-        h InputGroup, {id: '10be-text-inout', placeholder: '10Be value'}
+        h InputGroup, {
+          id: '10be-text-inout',
+          placeholder: '10Be value',
+          value: @state.formData._10Be,
+          onChange: updater('_10Be')
+        }
       ]
       h FormGroup, {
         helperText: '0 to 1E-10, atoms/g',
         label: 'Uncertainty'
       }, [
-        h InputGroup, {id: 'uncertainty-text-inout', placeholder: 'Uncertainty value'}
+        h InputGroup, {
+          id: 'uncertainty-text-inout',
+          placeholder: 'Uncertainty value',
+          value: @state.formData.uncertainty,
+          onChange: updater('uncertainty')
+        }
       ]
       h FormGroup, {
         helperText: '0 - 700 ka',
         label: '10Be Age'
       }, [
-        h InputGroup, {id: '10be-age-text-inout', placeholder: 'Age value'}
+        h InputGroup, {
+          id: '10be-age-text-inout',
+          placeholder: 'Age value',
+          value: @state.formData.age,
+          onChange: updater('age')
+        }
       ]
       h FormGroup, {
         helperText: 'Enter additional information',
         label: 'Notes'
       }, [
-        h InputGroup, {id: 'notes-text-inout', placeholder: 'Notes or comments'}
+        h InputGroup, {
+          id: 'notes-text-inout',
+          placeholder: 'Notes or comments',
+          value: @state.formData.notes,
+          onChange: updater('notes')
+        }
       ]
       h Button, {
         disabled: not @state.formData.lat?,
