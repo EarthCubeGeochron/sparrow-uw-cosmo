@@ -114,7 +114,7 @@ class Form extends Component
       }, [
         h InputGroup, {
           id: 'shielding-text-inout',
-          placeholder: 'Shielding value'，
+          placeholder: 'Shielding value',
           value: @state.formData.shielding,
           onChange: updater('shielding')
         }
@@ -208,7 +208,7 @@ class Form extends Component
         }
       ]
       h Button, {
-        disabled: not @state.formData.lat?,
+        disabled: not @state.formData.lat? || not @state.formData.lon?,
         text: 'Submit',
         onClick: @submitData
         #icon: 'document'
