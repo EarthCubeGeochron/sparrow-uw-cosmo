@@ -1,7 +1,6 @@
 from pandas import read_excel
 from datetime import datetime
 from sparrow.import_helpers import BaseImporter
-import sqlalchemy
 
 class CosmoImporter(BaseImporter):
     authority = "Cosmo Lab"
@@ -13,41 +12,31 @@ class CosmoImporter(BaseImporter):
         data points. For instance, elevation could be a sample parameter
         or analysis parameter.
         """
-
-        # Bugfix: manually set analysis type
-        try:
-            at = self.models.vocabulary_analysis_type(id='Sample measurements')
-            self.db.session.add(at)
-            self.db.session.commit()
-        except sqlalchemy.exc.IntegrityError:
-            self.db.session.rollback()
-
         sample = self.sample(name=row.loc['Sample-ID'])
         lon = row.loc['Long(DD)']
         lat = row.loc['Lat(DD)']
         sample.location = self.location(lon, lat)
         sample.elevation=row.loc['Elev(masl)']
 
-        meas = self.models.session()
+        session = self.models.session()
         #nuclide = row.loc['Nuclide']
 
-        meas.technique = self.method(f"cosmogenic nuclide dating").id
-        meas.material = self.material(row.loc['Sample-type']).id
-        meas.date = datetime(year=row.loc['Sampl-year'], month=1, day=1)
+        session.technique = self.method(f"cosmogenic nuclide dating").id
+        session.material = self.material(row.loc['Sample-type']).id
+        session.date = datetime(year=row.loc['Sampl-year'], month=1, day=1)
+        session.sample_id = sample.id
 
-        # These two are equivalent
-        meas.sample_id = sample.id
-        # meas._sample = sample
+        self.db.session.add(session)
 
-        self.db.session.add(meas)
 
-        self.measured_parameters(meas, row)
+
+        self.measured_parameters(session, row)
         #self.model_output(session, row)
 
         self.db.session.commit()
 
     # Be and Al importer
-    def measured_parameters(self, meas, row):
+    def measured_parameters(self, session, row):
 
         if row.loc['26Al-conc(at/g)'] == 0:
             nuclide = "Be10"
@@ -112,10 +101,10 @@ class CosmoImporter(BaseImporter):
 
         analysis.datum_collection = dc
 
-        analysis._session = meas
+        analysis._session = session
         return analysis
 
-    def model_output(self, meas, row):
+    def model_output(self, session, row):
         nuclide = row.loc['Nuclide']
 
         analysis = self.models.analysis(
@@ -132,7 +121,7 @@ class CosmoImporter(BaseImporter):
                 is_interpreted=True)
             # Special row for interror
             d.interror = row.loc[k+'_Interr']
-        analysis._session = meas
+        analysis._session = session
         self.db.session.add(analysis)
         return analysis
 
