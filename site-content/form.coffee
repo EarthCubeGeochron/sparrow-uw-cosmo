@@ -26,6 +26,7 @@ class Form extends Component
       newState = update @state, {formData:{[key]:{$set: event.target.value}}}
       @setState(newState)
 
+
     h 'div.shan-form', [
       h 'h1', '10Be Sample Data Input Form'
       h 'h2', 'General information of the sample'
@@ -100,7 +101,11 @@ class Form extends Component
       h 'h2', 'Date of collecting'
       h DatePicker,{
         #defaultValue: {today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()},
-        todayButtonText: 'today'
+        #todayButtonText: 'today',
+        value:@state.formData.calendarDate,
+        onChange: (result) =>
+          newState = update @state, {formData: {calendarDate: {$set: result}}}
+          @setState(newState)
       }
       # h DateInput, {
       #   formatDate: {date => date.toLocaleString()}
