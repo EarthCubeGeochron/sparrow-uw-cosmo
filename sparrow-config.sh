@@ -1,4 +1,4 @@
-cosmo="$(git rev-parse --show-toplevel)"
+cosmo="${SPARROW_CONFIG_DIR:-${0:h}}"
 
 # This is only necessary if another instance of `sparrow`
 # is the default on your system.
@@ -18,5 +18,7 @@ export SPARROW_DATA_DIR="$cosmo/test-data"
 export SPARROW_COMMANDS="$pipeline/bin"
 export SPARROW_INIT_SQL="$pipeline/sql"
 
+# Sparrow node-side plugins
 export SPARROW_SITE_CONTENT="$cosmo/site-content"
-export SPARROW_PLUGINS="$cosmo/cosmo_api"
+# A python module that contains Sparrow Python-side plugins
+export SPARROW_PLUGIN_DIR="$cosmo/backend-plugins"
