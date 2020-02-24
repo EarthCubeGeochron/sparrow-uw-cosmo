@@ -2,6 +2,7 @@ import h from 'react-hyperscript'
 import {FormGroup, InputGroup} from '@blueprintjs/core'
 import { DateInput, DatePicker, TimePrecision } from "@blueprintjs/datetime"
 import {Button} from '@blueprintjs/core'
+import {put} from 'axios'
 import {Component} from 'react'
 import {StatefulComponent} from '@macrostrat/ui-components'
 import ReactJSON from 'react-json-view'
@@ -213,7 +214,7 @@ class Form extends Component
         }
       ]
       h Button, {
-        disabled: not @state.formData.lat? || not @state.formData.lon?,
+        disabled: false #not @state.formData.lat? || not @state.formData.lon?,
         text: 'Submit',
         onClick: @submitData
         #icon: 'document'
@@ -222,5 +223,39 @@ class Form extends Component
 
   submitData: ->
     console.log "placeholder"
+
+    sessionData = {
+      date: "2020-02-21T12:00:00"
+      "name": "Declarative import test 2",
+      "sample": {
+          "name": "Soil 002"
+      },
+      "analysis": [{
+          "analysis_type": {
+              "id": "Soil aliquot pyrolysis"
+          },
+          "session_index": 0,
+          "datum": [{
+              "value": 1.18,
+              "error": 0.15,
+              "type": {
+                  "parameter": {
+                      "id": "soil water content"
+                  },
+                  "unit": {
+                      "id": "weight %"
+                  }
+              }
+          }]
+      }]
+    }
+
+    data = {
+      filename: null,
+      data: sessionData
+    }
+    console.log(data)
+    res = await put("/api/v1/import-data/session", data)
+    console.log(res)
 
 export default Form
