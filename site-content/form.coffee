@@ -33,6 +33,18 @@ class Form extends Component
       h 'h2', 'General information of the sample'
       h ReactJSON, {src: @state.formData}
 
+
+        h FormGroup, {
+          helperText: 'Enter the import name. Leave it blank if NA',
+          label: 'Import Name'
+        }, [
+          h InputGroup, {
+            id: 'import_name',
+            placeholder: 'Import Name',
+            value: @state.formData.import_name,
+            onChange: updater('import_name')
+          }
+        ]
       h FormGroup, {
         helperText: 'Enter the sample name',
         label: 'Sample'
@@ -214,27 +226,27 @@ class Form extends Component
         }
       ]
       h Button, {
-        disabled: false #not @state.formData.lat? || not @state.formData.lon?,
+        disabled: not @state.formData.lat? || not @state.formData.lon?,
         text: 'Submit',
         onClick: @submitData
         #icon: 'document'
       }
     ]
 
-  submitData: ->
+  submitData: => #@ ref to right value "=>" instead of "->"
     console.log "placeholder"
 
     sessionData = {
-      date: "2020-02-21T12:00:00"
-      "name": "Declarative import test 2",
+      "date": @state.formData.calendarDate
+      "name": @state.formData.import_name,
       "sample": {
-          "name": "Soil 002"
+          "name": @state.formData.sample_text
       },
       "analysis": [{
           "analysis_type": {
-              "id": "Soil aliquot pyrolysis"
+              "id":  @state.formData.id
           },
-          "session_index": 0,
+          "session_index": @state.formData.session_index,
           "datum": [{
               "value": 1.18,
               "error": 0.15,
