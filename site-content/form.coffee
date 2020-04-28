@@ -27,6 +27,9 @@ class Form extends Component
       newState = update @state, {formData:{[key]:{$set: event.target.value}}}
       @setState(newState)
 
+    lat_data = parseFloat(@state.formData.lab)
+    lon_data = parseFloat(@state.formData.lon)
+
 
     h 'div.shan-form', [
       h 'h1', '10Be Sample Data Input Form'
@@ -75,7 +78,7 @@ class Form extends Component
         h InputGroup, {
           id: 'lat-text-inout',
           placeholder: 'Lat value',
-          value: @state.formData.lat,
+          value: lat_data,
           onChange: updater('lat')
         }
       ]
@@ -86,7 +89,7 @@ class Form extends Component
         h InputGroup, {
           id: 'lon-text-inout',
           placeholder: 'Lon value',
-          value: @state.formData.lon,
+          value: lon_data
           onChange:updater('lon')}
       ]
       h FormGroup, {
@@ -193,6 +196,17 @@ class Form extends Component
         }
       ]
       h FormGroup, {
+        helperText: '0 - 700 ka',
+        label: '10Be Age'
+      }, [
+        h InputGroup, {
+          id: '10be-age-text-inout',
+          placeholder: 'Age value',
+          value: @state.formData.age * 1,
+          onChange: updater('age')
+        }
+      ]
+      h FormGroup, {
         helperText: '0 to 1E-10, atoms/g',
         label: 'Uncertainty'
       }, [
@@ -201,17 +215,6 @@ class Form extends Component
           placeholder: 'Uncertainty value',
           value: @state.formData.uncertainty,
           onChange: updater('uncertainty')
-        }
-      ]
-      h FormGroup, {
-        helperText: '0 - 700 ka',
-        label: '10Be Age'
-      }, [
-        h InputGroup, {
-          id: '10be-age-text-inout',
-          placeholder: 'Age value',
-          value: @state.formData.age,
-          onChange: updater('age')
         }
       ]
       h FormGroup, {
