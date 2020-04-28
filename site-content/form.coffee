@@ -27,9 +27,6 @@ class Form extends Component
       newState = update @state, {formData:{[key]:{$set: event.target.value}}}
       @setState(newState)
 
-    lat_data = parseFloat(@state.formData.lab)
-    lon_data = parseFloat(@state.formData.lon)
-
 
     h 'div.shan-form', [
       h 'h1', '10Be Sample Data Input Form'
@@ -78,7 +75,7 @@ class Form extends Component
         h InputGroup, {
           id: 'lat-text-inout',
           placeholder: 'Lat value',
-          value: lat_data,
+          value: @state.formData.lat,
           onChange: updater('lat')
         }
       ]
@@ -89,7 +86,7 @@ class Form extends Component
         h InputGroup, {
           id: 'lon-text-inout',
           placeholder: 'Lon value',
-          value: lon_data
+          value: @state.formData.lon,
           onChange:updater('lon')}
       ]
       h FormGroup, {
@@ -123,11 +120,6 @@ class Form extends Component
           newState = update @state, {formData: {calendarDate: {$set: result}}}
           @setState(newState)
       }
-      # h DateInput, {
-      #   formatDate: {date => date.toLocaleString()}
-      #   onChange: {this.handleDateChange}
-      #   parseDate: {str => new Date(str)}
-      # }
       h 'h2', 'Sample analysis'
       h FormGroup, {
         helperText: '0-1',
@@ -202,7 +194,7 @@ class Form extends Component
         h InputGroup, {
           id: '10be-age-text-inout',
           placeholder: 'Age value',
-          value: @state.formData.age * 1,
+          value: @state.formData.age,
           onChange: updater('age')
         }
       ]
@@ -236,6 +228,11 @@ class Form extends Component
       }
     ]
 
+  var lat_data = parseFloat(@state.formData.lat)
+  var lon_data = parseFloat(@state.formData.lon)
+  var age_data = parseFloat(@state.formData.age)
+  var uncertainty_data = = parseFloat(@state.formData.uncertainty)
+
   submitData: => #@ ref to right value "=>" instead of "->"
     console.log "placeholder"
 
@@ -245,14 +242,18 @@ class Form extends Component
       "sample": {
           "name": @state.formData.sample_text
       },
+      "coordinate":[{
+        "lat": lat_data,
+        "lon": lon_data,
+      }],
       "analysis": [{
           "analysis_type": {
               "id":  @state.formData.id
           },
           "session_index": @state.formData.session_index,
           "datum": [{
-              "value": @state.formData.age,
-              "error": @state.formData.uncertainty,
+              "value": age_data,
+              "error": uncertainty_data,
               "type": {
                   "parameter": {
                       "id": "soil water content"
