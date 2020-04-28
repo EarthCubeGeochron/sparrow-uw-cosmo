@@ -154,7 +154,7 @@ class Form extends Component
       }, [
         h InputGroup, {
           id: '9be-text-inout',
-          placeholder: 'Quartz value',
+          placeholder: '9Be',
           value: @state.formData._9Be,
           onChange: updater('_9Be')
         }
@@ -248,8 +248,8 @@ class Form extends Component
           },
           "session_index": @state.formData.session_index,
           "datum": [{
-              "value": 1.18,
-              "error": 0.15,
+              "value": @state.formData.age,
+              "error": @state.formData.uncertainty,
               "type": {
                   "parameter": {
                       "id": "soil water content"
@@ -258,7 +258,14 @@ class Form extends Component
                       "id": "weight %"
                   }
               }
-          }]
+          }],
+          "shielding": @state.formData.shielding,
+          "quartz": @state.formData.quartz,
+          "9Be": @state.formData._9Be,
+          "10Be": @state.formData._10Be,
+          "10Be/9Be": @state.formData.Be_ratio,
+          "1 sigma": @state.formData._1_sigma,
+          "notes": @state.formData.notes
       }]
     }
 
