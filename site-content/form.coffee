@@ -228,10 +228,12 @@ class Form extends Component
       }
     ]
 
-  var lat_data = parseFloat(@state.formData.lat)
-  var lon_data = parseFloat(@state.formData.lon)
-  var age_data = parseFloat(@state.formData.age)
-  var uncertainty_data = = parseFloat(@state.formData.uncertainty)
+  #var lat_data, lon_data, age_data, uncertainty_data
+
+  lat_data = parseFloat(@state.formData.lat)
+  lon_data = parseFloat(@state.formData.lon)
+  age_data = parseFloat(@state.formData.age)
+  uncertainty_data = = parseFloat(@state.formData.uncertainty)
 
   submitData: => #@ ref to right value "=>" instead of "->"
     console.log "placeholder"
