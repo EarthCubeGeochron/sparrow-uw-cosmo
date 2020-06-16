@@ -54,6 +54,28 @@ class Form extends Component {
           })
         ]),
       h(FormGroup, {
+        helperText: 'Enter the session index',
+        label: 'Session'
+      }, [
+        h(InputGroup, {
+          id: 'session-index-text-input',
+          placeholder: 'Session index',
+          value: this.state.formData.session_index,
+          onChange: updater('session_index_text')
+        })
+      ]),
+      h(FormGroup, {
+        helperText: 'Enter the analysis name',
+        label: 'Analysis name'
+      }, [
+        h(InputGroup, {
+          id: 'analysis-name-text-input',
+          placeholder: 'Analysis name text',
+          value: this.state.formData.analysis_name,
+          onChange: updater('analysis_text')
+        })
+      ]),
+      h(FormGroup, {
         helperText: 'Enter the sample name',
         label: 'Sample'
       }, [
@@ -238,60 +260,167 @@ class Form extends Component {
     ]);
   }
 
-    //var lat_data, lon_data, age_data, uncertainty_data
-
-    //lat_data = parseFloat(@state.formData.lat)
-    //lon_data = parseFloat(@state.formData.lon)
-    //age_data = parseFloat(@state.formData.age)
-    //uncertainty_data = parseFloat(@state.formData.uncertainty)
 
   async submitData() { //@ ref to right value "=>" instead of "->"
+    var lat_data, lon_data, uncertainty_data, session_index_data, age_data, shielding_data, elevation_data, sigma_data, quartz_data, _9Be_data, _10Be_data, ratio_Be_data;
+
+    lat_data = parseFloat(this.state.formData.lat);
+    lon_data = parseFloat(this.state.formData.lon);
+
+    if(this.state.formData.elevation == null){
+      elevation_data = null;
+    } else {
+      elevation_data = parseFloat(this.state.formData.elevation);
+    }
+
+    if(this.state.formData.session_index == null){
+      session_index_data = null;
+    } else {
+      session_index_data = parseFloat(this.state.formData.session_index);
+    }
+
+    if(this.state.formData.age == null){
+      age_data = null;
+    } else {
+      age_data = parseFloat(this.state.formData.age);
+    }
+
+    if(this.state.formData.uncertainty == null){
+      uncertainty_data = null;
+    } else {
+      uncertainty_data = parseFloat(this.state.formData.uncertainty);
+    }
+
+    if(this.state.formData._1_sigma == null){
+      sigma_data = null;
+    } else {
+      sigma_data = parseFloat(this.state.formData._1_sigma);
+    }
+
+    if(this.state.formData.shielding == null){
+      shielding_data = null;
+    } else {
+      shielding_data = parseFloat(this.state.formData.shielding);
+    }
+
+    if(this.state.formData.quartz == null){
+      quartz_data = null;
+    } else {
+      quartz_data = parseFloat(this.state.formData.quartz);
+    }
+
+    if(this.state.formData._9Be == null){
+      _9Be_data = null;
+    } else {
+      _9Be_data = parseFloat(this.state.formData._9Be);
+    }
+
+    if(this.state.formData._10Be == null){
+      _10Be_data = null;
+    } else {
+      _9Be_data = parseFloat(this.state.formData._10Be);
+    }
+
+    if(this.state.formData.Be_ratio == null){
+      ratio_Be_data = null;
+    } else {
+      ratio_Be_data = parseFloat(this.state.formData.Be_ratio);
+    }
+
+
     console.log("placeholder");
 
     const sessionData = {
-      "date": this.state.formData.calendarDate,
-      "name": this.state.formData.import_name,
-      "sample": {
-          "name": this.state.formData.sample_text
-      },
-      "coordinate":[{
-        "lat": this.state.formData.lat,
-        "lon": this.state.formData.lon,
-      }],
-      "analysis": [{
-          "analysis_type": {
-              "id":  this.state.formData.id
-          },
-          "session_index": this.state.formData.session_index,
-          "datum": [{
-              "value": this.state.formData.age,
-              "error": this.state.formData.uncertainty,
-              "type": {
-                  "parameter": {
-                      "id": "soil water content"
-                  },
-                  "unit": {
-                      "id": "weight %"
-                  }
-              }
-          }],
-          "shielding": this.state.formData.shielding,
-          "quartz": this.state.formData.quartz,
-          "9Be": this.state.formData._9Be,
-          "10Be": this.state.formData._10Be,
-          "10Be/9Be": this.state.formData.Be_ratio,
-          "1 sigma": this.state.formData._1_sigma,
-          "notes": this.state.formData.notes
-      }]
-    };
+               "date": this.state.formData.calendarDate,
+               "name": this.state.formData.import_name,
+               "sample": {
+                   "name": this.state.formData.sample_text
+               },
+               "analysis": [{
+                   // Can't seem to get or create this instance from the database
+                   "analysis_type": this.state.formData.analysis_name,
+                   "session_index": this.state.formData.session_index,
+                   "datum": [{
+                       "value": _9Be_data,
+                       "error": null,
+                       "type": {
+                           'parameter': '9Be carrier',
+                           'unit': ''
+                       }
+                   },{
+                       "value": _10Be_data,
+                       "error": null,
+                       "type": {
+                           'parameter': '10Be',
+                           'unit': 'atoms/g'
+                       }
+                   },{
+                       "value": ratio_Be_data,
+                       "error": null,
+                       "type": {
+                           'parameter': '10Be/9Be',
+                           'unit': 'none'
+                       }
+                   },{
+                       "value": age_data,
+                       "error": uncertainty_data,
+                       "type": {
+                           'parameter': '10Be Age',
+                           'unit': 'ka'
+                       }
+                   },{
+                       "value": shielding_data,
+                       "error": null,
+                       "type": {
+                           'parameter': 'Sheilding',
+                           'unit': 'none'
+                       }
+                   },{
+                       "value": quartz_data,
+                       "error": null,
+                       "type": {
+                           'parameter': 'Quartz',
+                           'unit': 'none'
+                       }
+                   },{
+                       "value": elevation_data,
+                       "error": null,
+                       "type": {
+                           'parameter': 'Elevation',
+                           'unit': 'm'
+                       }
+                   },{
+                       "value": sigma_data,
+                       "error": null,
+                       "type": {
+                           'parameter': '1 Sigma',
+                           'unit': 'none'
+                       }
+                   }]
+               }],
+               "geometry": {
+                 "type": "Point",
+                 "coordinates": [
+                   lon_data,
+                   lat_data
+              ]
+            }
+          };
 
     const data = {
       filename: null,
       data: sessionData
     };
     console.log(data);
-    const res = await put("/api/v1/import-data/session", data);
-    return console.log(res);
+    try {
+      const res = await put("/api/v1/import-data/session", data);
+      return console.log(res);
+    } catch (error) {
+      console.error(error);
+      // expected output: ReferenceError: nonExistentFunction is not defined
+      // Note - error messages will vary depending on browser
+    }
+
   };
 }
 
