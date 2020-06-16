@@ -268,61 +268,61 @@ class Form extends Component {
     lon_data = parseFloat(this.state.formData.lon);
 
     if(this.state.formData.elevation == null){
-      elevation_data = null;
+      elevation_data = 0;
     } else {
       elevation_data = parseFloat(this.state.formData.elevation);
     }
 
     if(this.state.formData.session_index == null){
-      session_index_data = null;
+      session_index_data = 0;
     } else {
       session_index_data = parseFloat(this.state.formData.session_index);
     }
 
     if(this.state.formData.age == null){
-      age_data = null;
+      age_data = 0;
     } else {
       age_data = parseFloat(this.state.formData.age);
     }
 
     if(this.state.formData.uncertainty == null){
-      uncertainty_data = null;
+      uncertainty_data = 0;
     } else {
       uncertainty_data = parseFloat(this.state.formData.uncertainty);
     }
 
     if(this.state.formData._1_sigma == null){
-      sigma_data = null;
+      sigma_data = 0;
     } else {
       sigma_data = parseFloat(this.state.formData._1_sigma);
     }
 
     if(this.state.formData.shielding == null){
-      shielding_data = null;
+      shielding_data = 0;
     } else {
       shielding_data = parseFloat(this.state.formData.shielding);
     }
 
     if(this.state.formData.quartz == null){
-      quartz_data = null;
+      quartz_data = 0;
     } else {
       quartz_data = parseFloat(this.state.formData.quartz);
     }
 
     if(this.state.formData._9Be == null){
-      _9Be_data = null;
+      _9Be_data = 0;
     } else {
       _9Be_data = parseFloat(this.state.formData._9Be);
     }
 
     if(this.state.formData._10Be == null){
-      _10Be_data = null;
+      _10Be_data = 0;
     } else {
-      _9Be_data = parseFloat(this.state.formData._10Be);
+      _10Be_data = parseFloat(this.state.formData._10Be);
     }
 
     if(this.state.formData.Be_ratio == null){
-      ratio_Be_data = null;
+      ratio_Be_data = 0;
     } else {
       ratio_Be_data = parseFloat(this.state.formData.Be_ratio);
     }
