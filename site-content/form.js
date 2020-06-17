@@ -252,7 +252,7 @@ class Form extends Component {
         })
       ]),
       h(Button, {
-        disabled: (this.state.formData.lat == null) || (this.state.formData.lon == null),
+        disabled: (this.state.formData.lat == null) || (this.state.formData.lon == null) || (this.state.formData.calendarDate == null),
         text: 'Submit',
         onClick: this.submitData.bind(this)
         //icon: 'document'
@@ -334,7 +334,14 @@ class Form extends Component {
                "date": this.state.formData.calendarDate,
                "name": this.state.formData.import_name,
                "sample": {
-                   "name": this.state.formData.sample_text
+                   "name": this.state.formData.sample_text,
+                   "location": {
+                     "type": "Point",
+                     "coordinates": [
+                       lon_data,
+                       lat_data
+                  ]
+                }
                },
                "analysis": [{
                    // Can't seem to get or create this instance from the database
@@ -397,14 +404,7 @@ class Form extends Component {
                            'unit': 'none'
                        }
                    }]
-               }],
-               "geometry": {
-                 "type": "Point",
-                 "coordinates": [
-                   lon_data,
-                   lat_data
-              ]
-            }
+               }]
           };
 
     const data = {
