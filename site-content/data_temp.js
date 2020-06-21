@@ -1,12 +1,19 @@
-data = {
+const sessionData = {
            "date": this.state.formData.calendarDate,
            "name": this.state.formData.import_name,
            "sample": {
-               "name": this.state.formData.sample_text
+               "name": this.state.formData.sample_text,
+               "location": {
+                 "type": "Point",
+                 "coordinates": [
+                   lon_data,
+                   lat_data
+              ]
+            }
            },
            "analysis": [{
                // Can't seem to get or create this instance from the database
-               "analysis_type": this.state.formData.analysis_name,,
+               "analysis_type": this.state.formData.analysis_name,
                "session_index": this.state.formData.session_index,
                "datum": [{
                    "value": _9Be_data,
@@ -64,20 +71,6 @@ data = {
                        'parameter': '1 Sigma',
                        'unit': 'none'
                    }
-               },{
-                   "value": this.state.formData.notes,
-                   "error": null,
-                   "type": {
-                       'parameter': 'Notes',
-                       'unit': ''
-                   }
                }]
-           }],
-           "geometry": {
-             "type": "Point",
-             "coordinates": [
-               lon_data,
-               lat_data
-          ]
-        }
-      }
+           }]
+      };
