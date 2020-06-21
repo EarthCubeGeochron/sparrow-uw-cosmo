@@ -411,7 +411,8 @@ class Form extends Component {
       filename: null,
       data: sessionData
     };
-    console.log(data);
+    //console.log(data);
+    console.log(JSON.stringify(data));
     try {
       const res = await put("/api/v1/import-data/session", data);
       return console.log(res);
