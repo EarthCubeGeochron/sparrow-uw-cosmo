@@ -4,8 +4,13 @@ import Map from "./testmap.js";
 import 'leaflet/dist/leaflet.css'
 
 function Carto() {
+
+  const [mapCenter, setMapCenter] = useState({
+    lat: 0, lng: 0
+  })
+
   const [markersData, setMarkersData] = useState([
-    { latLng: { lat: 0, lng: 0 }, title: 10 }
+    { latLng: { lat: 40, lng: -90 }, title: 1 }
   ]);
 
   function addMarker() {
@@ -15,10 +20,7 @@ function Carto() {
       ...markersData,
       {
         title: +lastMarker.title + 1,
-        latLng: {
-          lat: lastMarker.latLng.lat + 0.0001,
-          lng: lastMarker.latLng.lng + 0.0001
-        }
+        latLng: mapCenter
       }
     ]);
   }
@@ -28,7 +30,8 @@ function Carto() {
       <h2>Shan Ye's Test</h2>
       <h3>(modified by Daven Quinn)</h3>
       <p>Shan Ye's test: Add a leaflet map here:</p>
-      <Map markersData={markersData} />
+      // onMapClick
+      <Map markersData={markersData} onMapMove={setMapCenter} />
       <button onClick={addMarker}>Add marker</button>
       <ul>
         Markers data:
