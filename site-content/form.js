@@ -335,6 +335,8 @@ class Form extends Component {
                "name": this.state.formData.import_name,
                "sample": {
                    "name": this.state.formData.sample_text,
+                   "elevation":elevation_data,
+                   "location_name":  this.state.formData.location,
                    "location": {
                      "type": "Point",
                      "coordinates": [
@@ -388,13 +390,6 @@ class Form extends Component {
                        "type": {
                            'parameter': 'Quartz',
                            'unit': 'none'
-                       }
-                   },{
-                       "value": elevation_data,
-                       "error": null,
-                       "type": {
-                           'parameter': 'Elevation',
-                           'unit': 'm'
                        }
                    },{
                        "value": sigma_data,
