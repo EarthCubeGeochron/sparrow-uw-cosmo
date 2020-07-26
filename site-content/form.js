@@ -5,7 +5,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 import h from 'react-hyperscript';
-import {FormGroup, InputGroup} from '@blueprintjs/core';
+import {FormGroup, InputGroup, Intent} from '@blueprintjs/core';
 import { DateInput, DatePicker, TimePrecision } from "@blueprintjs/datetime";
 import {Button} from '@blueprintjs/core';
 import {put} from 'axios';
@@ -13,6 +13,19 @@ import {Component} from 'react';
 import {StatefulComponent} from '@macrostrat/ui-components';
 import ReactJSON from 'react-json-view';
 import update from 'immutability-helper';
+
+function getIntent(input, min, max){
+  if(input==null){
+    return Intent.PRIMARY;
+  } else {
+    var data_in = parseFloat(input);
+    if(data_in >= min && data_in <= max){
+      return Intent.SUCCESS;
+    } else {
+      return Intent.WARNING;
+    }
+  }
+}
 
 class Form extends Component {
   //initializing a component
@@ -61,7 +74,8 @@ class Form extends Component {
           id: 'session-index-text-input',
           placeholder: 'Session index',
           value: this.state.formData.session_index,
-          onChange: updater('session_index_text')
+          onChange: updater('session_index_text'),
+          intent: Intent.PRIMARY
         })
       ]),
       h(FormGroup, {
@@ -72,7 +86,8 @@ class Form extends Component {
           id: 'analysis-name-text-input',
           placeholder: 'Analysis name text',
           value: this.state.formData.analysis_name,
-          onChange: updater('analysis_text')
+          onChange: updater('analysis_text'),
+          intent: Intent.PRIMARY
         })
       ]),
       h(FormGroup, {
@@ -83,7 +98,8 @@ class Form extends Component {
           id: 'sample-text-input',
           placeholder: 'Sample text',
           value: this.state.formData.sample_text,
-          onChange: updater('sample_text')
+          onChange: updater('sample_text'),
+          intent: Intent.PRIMARY
         })
       ]),
       h(FormGroup, {
@@ -106,7 +122,8 @@ class Form extends Component {
           id: 'lat-text-inout',
           placeholder: 'Lat value',
           value: this.state.formData.lat,
-          onChange: updater('lat')
+          onChange: updater('lat'),
+          intent: getIntent(this.state.formData.lat,-90,90)
         })
       ]),
       h(FormGroup, {
@@ -117,7 +134,9 @@ class Form extends Component {
           id: 'lon-text-inout',
           placeholder: 'Lon value',
           value: this.state.formData.lon,
-          onChange:updater('lon')})
+          onChange:updater('lon'),
+          intent: getIntent(this.state.formData.lon,-180,180)
+        })
       ]),
       h(FormGroup, {
         helperText: 'General location. e.g. Northern Wisconsin',
@@ -143,8 +162,6 @@ class Form extends Component {
       ]),
       h('h2', 'Date of collecting'),
       h(DatePicker,{
-        //defaultValue: {today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()},
-        //todayButtonText: 'today',
         value:this.state.formData.calendarDate,
         onChange: result => {
           const newState = update(this.state, {formData: {calendarDate: {$set: result}}});
@@ -160,7 +177,8 @@ class Form extends Component {
           id: 'shielding-text-inout',
           placeholder: 'Shielding value',
           value: this.state.formData.shielding,
-          onChange: updater('shielding')
+          onChange: updater('shielding'),
+          intent: getIntent(this.state.formData.shielding,0,1)
         })
       ]),
       h(FormGroup, {
@@ -171,7 +189,8 @@ class Form extends Component {
           id: 'quartz-text-inout',
           placeholder: 'Quartz value',
           value: this.state.formData.quartz,
-          onChange: updater('quartz')
+          onChange: updater('quartz'),
+          intent: getIntent(this.state.formData.quartz,0,100)
         })
       ]),
       h(FormGroup, {
@@ -182,7 +201,8 @@ class Form extends Component {
           id: '9be-text-inout',
           placeholder: '9Be',
           value: this.state.formData._9Be,
-          onChange: updater('_9Be')
+          onChange: updater('_9Be'),
+          intent: getIntent(this.state.formData._9Be,0,500)
         })
       ]),
       h(FormGroup, {
@@ -193,7 +213,8 @@ class Form extends Component {
           id: 'be-ratio-text-inout',
           placeholder: '10Be/9Be value',
           value: this.state.formData.Be_ratio,
-          onChange: updater('Be_ratio')
+          onChange: updater('Be_ratio'),
+          intent: getIntent(this.state.formData.Be_ratio,0.0000000000000000001,0.000000001)
         })
       ]),
       h(FormGroup, {
@@ -204,7 +225,8 @@ class Form extends Component {
           id: '1sig-text-inout',
           placeholder: '1-sigma value',
           value: this.state.formData._1_sigma,
-          onChange: updater('_1_sigma')
+          onChange: updater('_1_sigma'),
+          intent: getIntent(this.state.formData._1_sigma,0.0000000000000000001,0.000000001)
         })
       ]),
       h(FormGroup, {
@@ -215,7 +237,8 @@ class Form extends Component {
           id: '10be-text-inout',
           placeholder: '10Be value',
           value: this.state.formData._10Be,
-          onChange: updater('_10Be')
+          onChange: updater('_10Be'),
+          intent: getIntent(this.state.formData._10Be,0,0.000000001)
         })
       ]),
       h(FormGroup, {
@@ -226,7 +249,8 @@ class Form extends Component {
           id: '10be-age-text-inout',
           placeholder: 'Age value',
           value: this.state.formData.age,
-          onChange: updater('age')
+          onChange: updater('age'),
+          intent: getIntent(this.state.formData.age,0,700)
         })
       ]),
       h(FormGroup, {
@@ -237,7 +261,8 @@ class Form extends Component {
           id: 'uncertainty-text-inout',
           placeholder: 'Uncertainty value',
           value: this.state.formData.uncertainty,
-          onChange: updater('uncertainty')
+          onChange: updater('uncertainty'),
+          intent: getIntent(this.state.formData.uncertainty,0,0.000000001)
         })
       ]),
       h(FormGroup, {
