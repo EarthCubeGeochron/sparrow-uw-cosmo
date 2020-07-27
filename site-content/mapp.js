@@ -15,6 +15,7 @@ L.Icon.Default.mergeOptions({
 
 var all_markers = []
 
+
 const style = {
   map: {
     height: '400px',
@@ -47,6 +48,9 @@ class Mapp extends React.Component {
   // }
 
   render() {
+    var southWest = L.latLng(-85, -200),
+    		northEast = L.latLng(85, 200),
+    		mybounds = L.latLngBounds(southWest, northEast);
     var data = all_markers
     return (
       <Map
@@ -54,10 +58,13 @@ class Mapp extends React.Component {
         onClick={this.addMarker}
         zoom={5}
         style={style.map}
+        //bounds = {mybounds}
         >
         <TileLayer
-          attribution='&copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
-          url='https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}'
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}.png'
+          minZoom = {3}
+          bounds = {mybounds}
         />
         {this.state.markers.map((markers, idx) =>
           <Marker key={`marker-${idx}`} position={markers}>
