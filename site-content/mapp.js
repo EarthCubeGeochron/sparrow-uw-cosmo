@@ -60,9 +60,9 @@ class Mapp extends React.Component {
           url='https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}'
         />
         {this.state.markers.map((markers, idx) =>
-          <Marker key={`marker-${idx}`} position={markers} data={data[data.length - 1]}>
+          <Marker key={`marker-${idx}`} position={markers}>
           <Popup>
-            <span>{data[data.length - 1][1]}, {data[data.length - 1][2]}</span>
+            <span>{data[idx][1]}, {data[idx][2]}</span>
           </Popup>
         </Marker>
         )}
