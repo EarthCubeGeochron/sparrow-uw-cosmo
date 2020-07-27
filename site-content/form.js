@@ -50,7 +50,6 @@ class Form extends Component {
 
 
     return h('div.shan-form', [
-      h('h1', '10Be Sample Data Input Form'),
       h('h2', 'General information of the sample'),
       h(ReactJSON, {src: this.state.formData}),
 
