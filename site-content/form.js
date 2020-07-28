@@ -5,7 +5,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 import h from 'react-hyperscript';
-import {FormGroup, InputGroup, Intent} from '@blueprintjs/core';
+import {FormGroup, InputGroup, Intent, Switch, Alignment} from '@blueprintjs/core';
 import { DateInput, DatePicker, TimePrecision } from "@blueprintjs/datetime";
 import {Button} from '@blueprintjs/core';
 import {put} from 'axios';
@@ -14,7 +14,17 @@ import {StatefulComponent} from '@macrostrat/ui-components';
 import ReactJSON from 'react-json-view';
 import update from 'immutability-helper';
 
+
 var warning_fields = {}
+var checked = 0
+
+function change_status(input){
+  if(input == 0){
+    checked = 1
+  } else{
+    checked = 0
+  }
+}
 
 function getIntent(input, min, max, name){
   if(input==null){
@@ -43,7 +53,8 @@ class Form extends Component {
     this.state = {
       formData: {
         sample_text: null
-      }
+      },
+      validate: 0
     };
   }
 
@@ -56,14 +67,74 @@ class Form extends Component {
       return this.setState(newState);
     }; };
 
+    const toggleChecked = (checked) => {
+      change_status(checked);
+    };
+
 
     return h('div.shan-form', [
-      h('h2', 'General information of the sample'),
+      h('h2', 'Data preview'),
       h(ReactJSON, {src: this.state.formData}),
       console.log(this.state.formData),
       console.log(Object.keys(this.state.formData).length),
       console.log(warning_fields),
 
+      h('h2','Sample location'),
+      h(FormGroup, {
+        helperText: '-90 to 90 degrees',
+        label: 'Latitude'
+      }, [
+        h(InputGroup, {
+          id: 'lat-text-inout',
+          placeholder: 'Lat value',
+          value: this.state.formData.lat,
+          onChange: updater('lat'),
+          intent: getIntent(this.state.formData.lat,-90,90, "lat")
+        })
+      ]),
+      h(FormGroup, {
+        helperText: '-180 to 180 degrees',
+        label: 'Longitude'
+      }, [
+        h(InputGroup, {
+          id: 'lon-text-inout',
+          placeholder: 'Lon value',
+          value: this.state.formData.lon,
+          onChange:updater('lon'),
+          intent: getIntent(this.state.formData.lon,-180,180,"lon")
+        })
+      ]),
+      h(FormGroup, {
+        helperText: 'General location. e.g. Northern Wisconsin',
+        label: 'Location Name'
+      }, [
+        h(InputGroup, {
+          id: 'location-text-inout',
+          placeholder: 'Location',
+          value: this.state.formData.location,
+          onChange: updater('location')
+        })
+      ]),
+      h(FormGroup, {
+        helperText: 'in meters',
+        label: 'Elevation'
+      }, [
+        h(InputGroup, {
+          id: 'elevation-text-inout',
+          placeholder: 'Elevation value',
+          value: this.state.formData.elevation,
+          onChange: updater('elevation')
+        })
+      ]),
+      h('h2', 'Date of collecting'),
+      h(DatePicker,{
+        value:this.state.formData.calendarDate,
+        onChange: result => {
+          const newState = update(this.state, {formData: {calendarDate: {$set: result}}});
+          return this.setState(newState);
+        }
+      }),
+      h('h2', 'General information of the sample'),
 
         h(FormGroup, {
           helperText: 'Enter the import name. Leave it blank if NA',
@@ -120,64 +191,10 @@ class Form extends Component {
           id: 'sample-id-input',
           placeholder: 'Sample ID',
           value: this.state.formData.sample_id,
-          onChange: updater('sample_id')
+          onChange: updater('sample_id'),
+          intent: Intent.PRIMARY
         })
       ]),
-      h('h2','Sample location'),
-      h(FormGroup, {
-        helperText: '-90 to 90 degrees',
-        label: 'Latitude'
-      }, [
-        h(InputGroup, {
-          id: 'lat-text-inout',
-          placeholder: 'Lat value',
-          value: this.state.formData.lat,
-          onChange: updater('lat'),
-          intent: getIntent(this.state.formData.lat,-90,90, "lat")
-        })
-      ]),
-      h(FormGroup, {
-        helperText: '-180 to 180 degrees',
-        label: 'Longitude'
-      }, [
-        h(InputGroup, {
-          id: 'lon-text-inout',
-          placeholder: 'Lon value',
-          value: this.state.formData.lon,
-          onChange:updater('lon'),
-          intent: getIntent(this.state.formData.lon,-180,180,"lon")
-        })
-      ]),
-      h(FormGroup, {
-        helperText: 'General location. e.g. Northern Wisconsin',
-        label: 'Location Name'
-      }, [
-        h(InputGroup, {
-          id: 'location-text-inout',
-          placeholder: 'Location',
-          value: this.state.formData.location,
-          onChange: updater('location')
-        })
-      ]),
-      h(FormGroup, {
-        helperText: 'in meters',
-        label: 'Elevation'
-      }, [
-        h(InputGroup, {
-          id: 'elevation-text-inout',
-          placeholder: 'Elevation value',
-          value: this.state.formData.elevation,
-          onChange: updater('elevation')
-        })
-      ]),
-      h('h2', 'Date of collecting'),
-      h(DatePicker,{
-        value:this.state.formData.calendarDate,
-        onChange: result => {
-          const newState = update(this.state, {formData: {calendarDate: {$set: result}}});
-          return this.setState(newState);
-        }
-      }),
       h('h2', 'Sample analysis'),
       h(FormGroup, {
         helperText: '0-1',
@@ -286,11 +303,24 @@ class Form extends Component {
           onChange: updater('notes')
         })
       ]),
-      h('h5','Validating'),
+      h('h3','Validating'),
       h('p', 'Empty field(s): ' + (17 - Object.keys(this.state.formData).length).toString()),
       h('p',  'Invalid field(s): ' + Object.keys(warning_fields).length.toString()),
-      h(Button, {
+      h(Switch, {
         disabled: (this.state.formData.lat == null) || (this.state.formData.lon == null) || (this.state.formData.calendarDate == null),
+        label: 'Have all required fields: lat, lon and date.',
+        defaultChecked: false,
+        checked: checked,
+        onChange: toggleChecked(checked),
+        innerLabelChecked:"Yes",
+        innerLabel:"No",
+        alignIndicator: Alignment.RIGHT,
+        inline: true
+      }),
+      console.log(checked.toString() + ' check'),
+      h('p',''),
+      h(Button, {
+        disabled: (checked == 1),
         text: 'Submit',
         onClick: this.submitData.bind(this)
       }),
