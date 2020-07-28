@@ -14,18 +14,25 @@ import {StatefulComponent} from '@macrostrat/ui-components';
 import ReactJSON from 'react-json-view';
 import update from 'immutability-helper';
 
-function getIntent(input, min, max){
+var warning_fields = {}
+
+function getIntent(input, min, max, name){
   if(input==null){
     return Intent.PRIMARY;
   } else {
     var data_in = parseFloat(input);
     if(data_in >= min && data_in <= max){
+      if(warning_fields[name] !== undefined){
+        delete warning_fields[name]
+      }
       return Intent.SUCCESS;
     } else {
+      warning_fields[name] = 1;
       return Intent.WARNING;
     }
   }
 }
+
 
 class Form extends Component {
   //initializing a component
@@ -40,6 +47,7 @@ class Form extends Component {
     };
   }
 
+
   render() {
 
     //update every key into the json view
@@ -52,6 +60,9 @@ class Form extends Component {
     return h('div.shan-form', [
       h('h2', 'General information of the sample'),
       h(ReactJSON, {src: this.state.formData}),
+      console.log(this.state.formData),
+      console.log(Object.keys(this.state.formData).length),
+      console.log(warning_fields),
 
 
         h(FormGroup, {
@@ -122,7 +133,7 @@ class Form extends Component {
           placeholder: 'Lat value',
           value: this.state.formData.lat,
           onChange: updater('lat'),
-          intent: getIntent(this.state.formData.lat,-90,90)
+          intent: getIntent(this.state.formData.lat,-90,90, "lat")
         })
       ]),
       h(FormGroup, {
@@ -134,7 +145,7 @@ class Form extends Component {
           placeholder: 'Lon value',
           value: this.state.formData.lon,
           onChange:updater('lon'),
-          intent: getIntent(this.state.formData.lon,-180,180)
+          intent: getIntent(this.state.formData.lon,-180,180,"lon")
         })
       ]),
       h(FormGroup, {
@@ -177,7 +188,7 @@ class Form extends Component {
           placeholder: 'Shielding value',
           value: this.state.formData.shielding,
           onChange: updater('shielding'),
-          intent: getIntent(this.state.formData.shielding,0,1)
+          intent: getIntent(this.state.formData.shielding,0,1,"shielding")
         })
       ]),
       h(FormGroup, {
@@ -189,7 +200,7 @@ class Form extends Component {
           placeholder: 'Quartz value',
           value: this.state.formData.quartz,
           onChange: updater('quartz'),
-          intent: getIntent(this.state.formData.quartz,0,100)
+          intent: getIntent(this.state.formData.quartz,0,100,"quartz")
         })
       ]),
       h(FormGroup, {
@@ -201,7 +212,7 @@ class Form extends Component {
           placeholder: '9Be',
           value: this.state.formData._9Be,
           onChange: updater('_9Be'),
-          intent: getIntent(this.state.formData._9Be,0,500)
+          intent: getIntent(this.state.formData._9Be,0,500,"9Be")
         })
       ]),
       h(FormGroup, {
@@ -213,7 +224,7 @@ class Form extends Component {
           placeholder: '10Be/9Be value',
           value: this.state.formData.Be_ratio,
           onChange: updater('Be_ratio'),
-          intent: getIntent(this.state.formData.Be_ratio,0.0000000000000000001,0.000000001)
+          intent: getIntent(this.state.formData.Be_ratio,0.0000000000000000001,0.000000001,"10Be/9Be")
         })
       ]),
       h(FormGroup, {
@@ -225,7 +236,7 @@ class Form extends Component {
           placeholder: '1-sigma value',
           value: this.state.formData._1_sigma,
           onChange: updater('_1_sigma'),
-          intent: getIntent(this.state.formData._1_sigma,0.0000000000000000001,0.000000001)
+          intent: getIntent(this.state.formData._1_sigma,0.0000000000000000001,0.000000001,"1sigma")
         })
       ]),
       h(FormGroup, {
@@ -237,7 +248,7 @@ class Form extends Component {
           placeholder: '10Be value',
           value: this.state.formData._10Be,
           onChange: updater('_10Be'),
-          intent: getIntent(this.state.formData._10Be,0,0.000000001)
+          intent: getIntent(this.state.formData._10Be,0,0.000000001,"10Be")
         })
       ]),
       h(FormGroup, {
@@ -249,7 +260,7 @@ class Form extends Component {
           placeholder: 'Age value',
           value: this.state.formData.age,
           onChange: updater('age'),
-          intent: getIntent(this.state.formData.age,0,700)
+          intent: getIntent(this.state.formData.age,0,700,"age")
         })
       ]),
       h(FormGroup, {
@@ -261,7 +272,7 @@ class Form extends Component {
           placeholder: 'Uncertainty value',
           value: this.state.formData.uncertainty,
           onChange: updater('uncertainty'),
-          intent: getIntent(this.state.formData.uncertainty,0,0.000000001)
+          intent: getIntent(this.state.formData.uncertainty,0,0.000000001,"uncertainty")
         })
       ]),
       h(FormGroup, {
@@ -275,12 +286,14 @@ class Form extends Component {
           onChange: updater('notes')
         })
       ]),
+      h('h5','Validating'),
+      h('p', 'Empty field(s): ' + (17 - Object.keys(this.state.formData).length).toString()),
+      h('p',  'Invalid field(s): ' + Object.keys(warning_fields).length.toString()),
       h(Button, {
         disabled: (this.state.formData.lat == null) || (this.state.formData.lon == null) || (this.state.formData.calendarDate == null),
         text: 'Submit',
         onClick: this.submitData.bind(this)
-        //icon: 'document'
-      })
+      }),
     ]);
   }
 
