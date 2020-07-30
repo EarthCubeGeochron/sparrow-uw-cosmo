@@ -23,7 +23,7 @@ const style = {
   }
 }
 
-class Mapp extends React.Component {
+class Carto extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -77,4 +77,4 @@ class Mapp extends React.Component {
     );
   }
 }
-export default Mapp;
+export default Carto;

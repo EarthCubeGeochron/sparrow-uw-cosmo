@@ -1,7 +1,7 @@
 import {Markdown, HTML} from '@macrostrat/ui-components'
 import aboutText from './about-the-lab.md'
 import h from 'react-hyperscript'
-import Mapp from './mapp'
+import Carto from './mapping'
 import Form from './form'
 import 'leaflet/dist/leaflet.css'
 
@@ -22,7 +22,7 @@ Steps to fix:
 
 AdminBaseComponent = ->
   h 'div', [
-    h Mapp
+    h Carto
     h Form
   ]
 
