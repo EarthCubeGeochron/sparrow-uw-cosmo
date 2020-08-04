@@ -13,6 +13,7 @@ import {Component} from 'react';
 import {StatefulComponent} from '@macrostrat/ui-components';
 import ReactJSON from 'react-json-view';
 import update from 'immutability-helper';
+import addMarkerClass from './mapping';
 
 
 var warning_fields = {}
@@ -60,7 +61,6 @@ class Form extends Component {
 
 
   render() {
-
     //update every key into the json view
     const updater = key => { return event => {
       const newState = update(this.state, {formData:{[key]:{$set: event.target.value}}});
@@ -75,6 +75,7 @@ class Form extends Component {
     return h('div.shan-form', [
       h('h2', 'Data preview'),
       h(ReactJSON, {src: this.state.formData}),
+      console.log('this coor 2: ' +addMarkerClass.addMarker),
       console.log(this.state.formData),
       console.log(Object.keys(this.state.formData).length),
       console.log(warning_fields),
