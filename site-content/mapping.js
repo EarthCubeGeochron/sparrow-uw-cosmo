@@ -23,18 +23,18 @@ const style = {
   }
 }
 
-class addMarkerClass extends React.Component{
+class addMarkerClass{
   constructor() {
-    super();
+    //super();
     this.state = {
       //currentPos: null,
       markers: []
     };
     // this.handleClick = this.handleClick.bind(this);
   }
-  function addMarker(e){
+  addMarker=(e)=>{
     var this_coor;
-    console.log('this coor 1 ' +this_coor);
+    console.log('this coor 1: ' +this_coor);
     const {markers} = this.state;
     const lastMarker = markers[markers.length -1];
     markers.push(e.latlng);
@@ -43,7 +43,7 @@ class addMarkerClass extends React.Component{
     console.log(JSON.stringify(markers));
     console.log(JSON.stringify(all_markers));
     this_coor = all_markers[all_markers.length - 1];
-    console.log('this coor ::' +this_coor);
+    console.log('this coor:' +this_coor);
     return this_coor;
   }
 }
