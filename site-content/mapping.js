@@ -5,8 +5,11 @@ import iconUrl from 'leaflet/dist/images/marker-icon.png';
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
 import L from "leaflet";
 import 'leaflet/dist/leaflet.css'
+import Form from "./form"
 
 delete L.Icon.Default.prototype._getIconUrl;
+
+
 L.Icon.Default.mergeOptions({
   iconRetinaUrl,
   iconUrl,
@@ -23,43 +26,40 @@ const style = {
   }
 }
 
-class addMarkerClass{
-  constructor() {
-    //super();
-    this.state = {
-      //currentPos: null,
-      markers: []
-    };
-    // this.handleClick = this.handleClick.bind(this);
-  }
-  addMarker=(e)=>{
-    var this_coor;
-    console.log('this coor 1: ' +this_coor);
-    const {markers} = this.state;
-    const lastMarker = markers[markers.length -1];
-    markers.push(e.latlng);
-    all_markers.push([markers.length, e.latlng.lat, e.latlng.lng]);
-    this.setState({markers});
-    console.log(JSON.stringify(markers));
-    console.log(JSON.stringify(all_markers));
-    this_coor = all_markers[all_markers.length - 1];
-    console.log('this coor:' +this_coor);
-    return this_coor;
-  }
-}
+// class addMarkerClass{
+//   constructor() {
+//     //super();
+//     this.state = {
+//       //currentPos: null,
+//       markers: []
+//     };
+//     // this.handleClick = this.handleClick.bind(this);
+//   }
+//   addMarker=(e)=>{
+//     var this_coor;
+//     console.log('this coor 1: ' +this_coor);
+//     const {markers} = this.state;
+//     const lastMarker = markers[markers.length -1];
+//     markers.push(e.latlng);
+//     all_markers.push([markers.length, e.latlng.lat, e.latlng.lng]);
+//     this.setState({markers});
+//     console.log(JSON.stringify(markers));
+//     console.log(JSON.stringify(all_markers));
+//     this_coor = all_markers[all_markers.length - 1];
+//     console.log('this coor:' +this_coor);
+//     return this_coor;
+//   }
+// }
 
 
 class Carto extends React.Component {
-  // constructor() {
-  //   super();
-  //   this.state = {
-  //     //currentPos: null,
-  //     markers: []
-  //   };
-  //   // this.handleClick = this.handleClick.bind(this);
-  // }
-  constructor(thisadd = new addMarkerClass())  {
-    this.add = thisadd;
+  constructor() {
+    super();
+    this.state = {
+      //currentPos: null,
+      markers: Form.getMarkers
+    };
+    // this.handleClick = this.handleClick.bind(this);
   }
 
   // addMarker = (e) => {
@@ -83,10 +83,11 @@ class Carto extends React.Component {
     		northEast = L.latLng(85, 200),
     		mybounds = L.latLngBounds(southWest, northEast);
     var data = all_markers
+    //var markers = Form.getMarkers
     return (
       <Map
         center={[40,-100]}
-        onClick={this.add.addMarker}
+        onClick={Form.addMarker}
         zoom={5}
         style={style.map}
         //bounds = {mybounds}
@@ -97,9 +98,9 @@ class Carto extends React.Component {
           minZoom = {3}
           bounds = {mybounds}
         />
-        {this.add.state.markers.map((markers, idx) =>
+        {this.state.markers.map((markers, idx) =>
           <Marker key={`marker-${idx}`} position={markers}>
-          //{this_coor = [data[idx][1],data[idx][2]]}
+          {console.log("form state" + Form.state)}
           <Popup>
             <span>{data[idx][1]}, {data[idx][2]}</span>
           </Popup>
@@ -110,5 +111,5 @@ class Carto extends React.Component {
   }
 }
 
-export {Carto, addMarkerClass};
+export default Carto;
 //export this_coor;
