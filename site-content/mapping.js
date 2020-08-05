@@ -26,57 +26,15 @@ const style = {
   }
 }
 
-// class addMarkerClass{
-//   constructor() {
-//     //super();
-//     this.state = {
-//       //currentPos: null,
-//       markers: []
-//     };
-//     // this.handleClick = this.handleClick.bind(this);
-//   }
-//   addMarker=(e)=>{
-//     var this_coor;
-//     console.log('this coor 1: ' +this_coor);
-//     const {markers} = this.state;
-//     const lastMarker = markers[markers.length -1];
-//     markers.push(e.latlng);
-//     all_markers.push([markers.length, e.latlng.lat, e.latlng.lng]);
-//     this.setState({markers});
-//     console.log(JSON.stringify(markers));
-//     console.log(JSON.stringify(all_markers));
-//     this_coor = all_markers[all_markers.length - 1];
-//     console.log('this coor:' +this_coor);
-//     return this_coor;
-//   }
-// }
-
 
 class Carto extends React.Component {
   constructor() {
     super();
     this.state = {
-      //currentPos: null,
+      //set up this.state.markers by calling the getMarkers function in form.js
       markers: Form.getMarkers
     };
-    // this.handleClick = this.handleClick.bind(this);
   }
-
-  // addMarker = (e) => {
-  //   const {markers} = this.state
-  //   const lastMarker = markers[markers.length -1]
-  //   markers.push(e.latlng)
-  //   all_markers.push([markers.length, e.latlng.lat, e.latlng.lng])
-  //   this.setState({markers})
-  //   console.log(JSON.stringify(markers))
-  //   console.log(JSON.stringify(all_markers))
-  //   this_coor = all_markers[all_markers.length - 1]
-  //   console.log('this coor ' +this_coor);
-  // }
-
-  // handleClick(e){
-  //   this.setState({ currentPos: e.latlng });
-  // }
 
   render() {
     var southWest = L.latLng(-85, -200),
