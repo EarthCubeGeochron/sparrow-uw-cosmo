@@ -5,6 +5,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 import h from 'react-hyperscript';
+import {Map, TileLayer, Popup, Marker, withLeaflet} from "react-leaflet";
 import {FormGroup, InputGroup, Intent, Switch, Alignment} from '@blueprintjs/core';
 import { DateInput, DatePicker, TimePrecision } from "@blueprintjs/datetime";
 import {Button} from '@blueprintjs/core';
@@ -13,7 +14,7 @@ import {Component} from 'react';
 import {StatefulComponent} from '@macrostrat/ui-components';
 import ReactJSON from 'react-json-view';
 import update from 'immutability-helper';
-import addMarkerClass from './mapping';
+//import addMarkerClass from './mapping';
 
 
 var warning_fields = {}
@@ -55,8 +56,30 @@ class Form extends Component {
       formData: {
         sample_text: null
       },
-      validate: 0
+      validate: 0,
+      markers: []
     };
+  }
+
+  getMarkers = (e) =>{
+    return e.markers
+  }
+
+  // setting up function for markers in mapping.js
+
+  addMarker=(e)=>{
+    var this_coor;
+    console.log('this coor 1: ' +this_coor);
+    const {markers} = this.state.markers;
+    const lastMarker = markers[markers.length -1];
+    markers.push(e.latlng);
+    all_markers.push([markers.length, e.latlng.lat, e.latlng.lng]);
+    this.setState({markers});
+    console.log(JSON.stringify(markers));
+    console.log(JSON.stringify(all_markers));
+    this_coor = all_markers[all_markers.length - 1];
+    console.log('this coor:' +this_coor);
+    return this_coor;
   }
 
 
@@ -75,7 +98,7 @@ class Form extends Component {
     return h('div.shan-form', [
       h('h2', 'Data preview'),
       h(ReactJSON, {src: this.state.formData}),
-      console.log('this coor 2: ' +addMarkerClass.addMarker),
+      console.log('this coor 2: ' + this.state.markers),
       console.log(this.state.formData),
       console.log(Object.keys(this.state.formData).length),
       console.log(warning_fields),
