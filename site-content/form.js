@@ -4,17 +4,44 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
+ import React, { Component } from "react";
 import h from 'react-hyperscript';
 import {Map, TileLayer, Popup, Marker, withLeaflet} from "react-leaflet";
 import {FormGroup, InputGroup, Intent, Switch, Alignment} from '@blueprintjs/core';
 import { DateInput, DatePicker, TimePrecision } from "@blueprintjs/datetime";
 import {Button} from '@blueprintjs/core';
 import {put} from 'axios';
-import {Component} from 'react';
 import {StatefulComponent} from '@macrostrat/ui-components';
 import ReactJSON from 'react-json-view';
 import update from 'immutability-helper';
+//import {Map, TileLayer, Popup, Marker, withLeaflet} from "react-leaflet";
+import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
+import iconUrl from 'leaflet/dist/images/marker-icon.png';
+import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
+import L from "leaflet";
+import 'leaflet/dist/leaflet.css';
 //import addMarkerClass from './mapping';
+
+
+// Map components
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl
+});
+
+var all_markers = []
+
+
+const style = {
+  map: {
+    height: '400px',
+    width: '100%'
+  }
+}
+
+// Form component
 
 
 var warning_fields = {}
@@ -46,6 +73,7 @@ function getIntent(input, min, max, name){
 }
 
 
+
 class Form extends Component {
   //initializing a component
   constructor(props) {
@@ -53,11 +81,10 @@ class Form extends Component {
     super(props);
     // this.state is @state
     this.state = {
-      formData: {
-        sample_text: null
-      },
+      formData: {sample_text: null},
       validate: 0,
-      markers: []
+      markers: [],
+      markers1: {lat: null,lon: null}
     };
   }
 
@@ -65,29 +92,66 @@ class Form extends Component {
     return e.markers
   }
 
+
   // setting up function for markers in mapping.js
 
   addMarker=(e)=>{
     var this_coor;
     console.log('this coor 1: ' +this_coor);
-    const {markers} = this.state.markers;
-    const lastMarker = markers[markers.length -1];
+    console.log('latlng: ' +this.state.markers1);
+    const {markers} = this.state;
+    //const lastMarker = markers[markers.length -1];
     markers.push(e.latlng);
     all_markers.push([markers.length, e.latlng.lat, e.latlng.lng]);
-    this.setState({markers});
-    console.log(JSON.stringify(markers));
-    console.log(JSON.stringify(all_markers));
-    this_coor = all_markers[all_markers.length - 1];
+    var new_coor = [parseFloat(this.state.markers1.lat), parseFloat(this.state.markers1.lon)];
+    const newState = update(this.state, {
+      markers:{$set: new_coor},
+      formData:{['lat']:{$set: e.latlng.lat}},
+      formData:{['lon']:{$set: e.latlng.lng}},
+      markers1:{['lat']:{$set: e.latlng.lat}},
+      markers1:{['lon']:{$set: e.latlng.lng}},})
+    this.setState(newState);
+    this_coor = [e.latlng.lat, e.latlng.lng];
     console.log('this coor:' +this_coor);
     return this_coor;
   }
 
 
+
   render() {
+    // Map setup
+    var southWest = L.latLng(-85, -200),
+    		northEast = L.latLng(85, 200),
+    		mybounds = L.latLngBounds(southWest, northEast);
+    var data = all_markers
     //update every key into the json view
     const updater = key => { return event => {
-      const newState = update(this.state, {formData:{[key]:{$set: event.target.value}}});
-      return this.setState(newState);
+      if(key == 'lat' || key == 'lon'){
+        const newState = update(this.state, {
+          formData:{[key]:{$set: event.target.value}},
+          markers1:{[key]:{$set: event.target.value}}});
+        return this.setState(newState);
+      }else{
+        const newState = update(this.state, {formData:{[key]:{$set: event.target.value}}});
+        return this.setState(newState);
+      }
+      // update marker []
+    }; };
+
+    // const form_coordinate = () =>{ return event => {
+    //   if(this.state.markers1.lat != null && this.state.markers1.lon != null){
+    //     var new_coor = [parseFloat(this.state.markers1.lat), parseFloat(this.state.markers1.lon)];
+    //     const newState = update(this.state,{markers:{$set: new_coor}});
+    //     return this.setState(newState);
+    //   }
+    // }; };
+
+    const form_coordinate = () =>{ return event => {
+      if(this.state.markers1.lat != null && this.state.markers1.lon != null){
+        var new_coor = [parseFloat(this.state.markers1.lat), parseFloat(this.state.markers1.lon)];
+        all_markers.push([this.state.markers.length, parseFloat(this.state.markers1.lat), parseFloat(this.state.markers1.lon)]);
+        data.push(new_coor);
+      }
     }; };
 
     const toggleChecked = (checked) => {
@@ -95,9 +159,35 @@ class Form extends Component {
     };
 
 
-    return h('div.shan-form', [
+    return (
+      h('div.form+map',[
+      <Map
+        center={[40,-100]}
+        onClick={this.addMarker}
+        zoom={5}
+        style={style.map}
+        //bounds = {mybounds}
+        >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}.png'
+          minZoom = {3}
+          bounds = {mybounds}
+        />
+        {data.map((data, idx) =>
+          <Marker key={`marker-${idx}`} position={data}>
+          <Popup>
+            <span>{data}</span>
+          </Popup>
+        </Marker>
+        )}
+      </Map>,
+      h('div.shan-form', [
       h('h2', 'Data preview'),
       h(ReactJSON, {src: this.state.formData}),
+      h(ReactJSON, {src: this.state.markers}),
+      h(ReactJSON, {src: data}),
+      h(ReactJSON, {src: this.state.markers1}),
       console.log('this coor 2: ' + this.state.markers),
       console.log(this.state.formData),
       console.log(Object.keys(this.state.formData).length),
@@ -128,6 +218,11 @@ class Form extends Component {
           intent: getIntent(this.state.formData.lon,-180,180,"lon")
         })
       ]),
+      h(Button, {
+        disabled: (checked == 1),
+        text: 'Map',
+        onClick: form_coordinate()
+      }),
       h(FormGroup, {
         helperText: 'General location. e.g. Northern Wisconsin',
         label: 'Location Name'
@@ -348,7 +443,9 @@ class Form extends Component {
         text: 'Submit',
         onClick: this.submitData.bind(this)
       }),
-    ]);
+    ])
+  ])
+    )
   }
 
 
