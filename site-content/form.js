@@ -4,7 +4,7 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
- import React, { Component } from "react";
+import React, { Component } from "react";
 import h from 'react-hyperscript';
 import {Map, TileLayer, Popup, Marker, withLeaflet} from "react-leaflet";
 import {FormGroup, InputGroup, Intent, Switch, Alignment} from '@blueprintjs/core';
@@ -23,7 +23,7 @@ import 'leaflet/dist/leaflet.css';
 //import addMarkerClass from './mapping';
 
 
-// Map components
+// Map icon sty;es
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl,
@@ -31,8 +31,8 @@ L.Icon.Default.mergeOptions({
   shadowUrl
 });
 
+// a list to host all markers
 var all_markers = []
-
 
 const style = {
   map: {
@@ -42,8 +42,7 @@ const style = {
 }
 
 // Form component
-
-
+// vars for validation -- not 100% successful yet, need to work on this later
 var warning_fields = {}
 var checked = 0
 
@@ -55,6 +54,7 @@ function change_status(input){
   }
 }
 
+// return the real time validation
 function getIntent(input, min, max, name){
   if(input==null){
     return Intent.PRIMARY;
@@ -83,18 +83,20 @@ class Form extends Component {
     this.state = {
       formData: {sample_text: null},
       validate: 0,
+      // for mapping the markers
       markers: [],
+      // for updating
       markers1: {lat: null,lon: null}
     };
   }
 
+  // might be removed later
   getMarkers = (e) =>{
     return e.markers
   }
 
 
-  // setting up function for markers in mapping.js
-
+  // setting up function for markers
   addMarker=(e)=>{
     var this_coor;
     console.log('this coor 1: ' +this_coor);
@@ -103,7 +105,8 @@ class Form extends Component {
     //const lastMarker = markers[markers.length -1];
     markers.push(e.latlng);
     all_markers.push([markers.length, e.latlng.lat, e.latlng.lng]);
-    var new_coor = [parseFloat(this.state.markers1.lat), parseFloat(this.state.markers1.lon)];
+    // get the lat and lon of this coor
+    var new_coor = [parseFloat(e.latlng.lat), parseFloat(e.latlng.lng)];
     const newState = update(this.state, {
       markers:{$set: new_coor},
       formData:{['lat']:{$set: e.latlng.lat}},
@@ -125,10 +128,12 @@ class Form extends Component {
     		mybounds = L.latLngBounds(southWest, northEast);
     var data = all_markers
     //update every key into the json view
+    // update the state in the form by the name of keys
     const updater = key => { return event => {
       if(key == 'lat' || key == 'lon'){
         const newState = update(this.state, {
           formData:{[key]:{$set: event.target.value}},
+          // if it is lat and lon, also update markers1
           markers1:{[key]:{$set: event.target.value}}});
         return this.setState(newState);
       }else{
@@ -146,6 +151,7 @@ class Form extends Component {
     //   }
     // }; };
 
+    // trying to update this.state.markers as a list containing coordinates
     const form_coordinate = () =>{ return event => {
       if(this.state.markers1.lat != null && this.state.markers1.lon != null){
         var new_coor = [parseFloat(this.state.markers1.lat), parseFloat(this.state.markers1.lon)];
@@ -154,6 +160,7 @@ class Form extends Component {
       }
     }; };
 
+    // for validating, TBC
     const toggleChecked = (checked) => {
       change_status(checked);
     };
