@@ -102,17 +102,15 @@ class Form extends Component {
     console.log('this coor 1: ' +this_coor);
     console.log('latlng: ' +this.state.markers1);
     const {markers} = this.state;
-    //const lastMarker = markers[markers.length -1];
-    //markers.concat(e.latlng);
-    //all_markers.concat([markers.length, e.latlng.lat, e.latlng.lng]);
+    const lastMarker = markers[markers.length -1];
+    markers.push(e.latlng);
+    all_markers.push([markers.length, e.latlng.lat, e.latlng.lng]);
     // get the lat and lon of this coor
     var new_coor = [parseFloat(e.latlng.lat), parseFloat(e.latlng.lng)];
     const newState = update(this.state, {
-      markers:{$set: new_coor},
-      formData:{['lat']:{$set: e.latlng.lat}},
-      formData:{['lon']:{$set: e.latlng.lng}},
-      markers1:{['lat']:{$set: e.latlng.lat}},
-      markers1:{['lon']:{$set: e.latlng.lng}},})
+      //markers:{$set: e.latlng},
+      formData:{['lat']:{$set: e.latlng.lat},['lon']:{$set: e.latlng.lng}},
+      markers1:{['lat']:{$set: e.latlng.lat},['lon']:{$set: e.latlng.lng}},})
     this.setState(newState);
     this_coor = [e.latlng.lat, e.latlng.lng];
     console.log('this coor:' +this_coor);
@@ -140,7 +138,7 @@ class Form extends Component {
         return this.setState(newState);
       }
       // update marker []
-      all_markers = [this.state.markers]
+      //all_markers = [this.state.markers]
     }; };
 
     // const form_coordinate = () =>{ return event => {
@@ -183,10 +181,10 @@ class Form extends Component {
           minZoom = {3}
           bounds = {mybounds}
         />
-        {data.map((data, idx) =>
-          <Marker key={`marker-${idx}`} position={data}>
+        {this.state.markers.map((markers, idx) =>
+          <Marker key={`marker-${idx}`} position={markers}>
           <Popup>
-            <span>{data}</span>
+            <span>{data[idx][1]}, {data[idx][2]}</span>
           </Popup>
         </Marker>
         )}
@@ -228,7 +226,7 @@ class Form extends Component {
         })
       ]),
       h(Button, {
-        disabled: (checked == 1),
+        disabled: (this.state.formData.lat == null || this.state.formData.lon == null),
         text: 'Map',
         onClick: form_coordinate()
       }),
