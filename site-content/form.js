@@ -46,11 +46,13 @@ const style = {
 var warning_fields = {}
 var checked = 0
 
-function change_status(input){
-  if(input == 0){
-    checked = 1
-  } else{
+function change_status(lat, lon, time, input){
+  if(lat == null || lon == null || time == null){
     checked = 0
+    return 0
+  } else {
+    checked = 1
+    return 1
   }
 }
 
@@ -159,8 +161,8 @@ class Form extends Component {
     }; };
 
     // for validating, TBC
-    const toggleChecked = (checked) => {
-      change_status(checked);
+    const toggleChecked = (lat, lon, time, checked) => {
+      return change_status(lat, lon, time, checked);
     };
 
     var data = all_markers
@@ -436,8 +438,8 @@ class Form extends Component {
         disabled: (this.state.formData.lat == null) || (this.state.formData.lon == null) || (this.state.formData.calendarDate == null),
         label: 'Have all required fields: lat, lon and date.',
         defaultChecked: false,
-        checked: checked,
-        onChange: toggleChecked(checked),
+        checked: toggleChecked(this.state.formData.lat, this.state.formData.lon, this.state.formData.calendarDate,checked),
+        //onChange: toggleChecked(this.state.formData.lat, this.state.formData.lon, this.state.formData.calendarDate,checked),
         innerLabelChecked:"Yes",
         innerLabel:"No",
         alignIndicator: Alignment.RIGHT,
@@ -446,7 +448,7 @@ class Form extends Component {
       console.log(checked.toString() + ' check'),
       h('p',''),
       h(Button, {
-        disabled: (checked == 1),
+        disabled: (checked == 0),
         text: 'Submit',
         onClick: this.submitData.bind(this)
       }),
