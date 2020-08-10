@@ -194,9 +194,9 @@ class Form extends Component {
       h('div.shan-form', [
       h('h2', 'Data preview'),
       h(ReactJSON, {src: this.state.formData}),
-      h(ReactJSON, {src: this.state.markers}),
+      //h(ReactJSON, {src: this.state.markers}),
       //h(ReactJSON, {src: data}),
-      h(ReactJSON, {src: this.state.markers1}),
+      //h(ReactJSON, {src: this.state.markers1}),
       console.log('this coor 2: ' + this.state.markers),
       console.log(this.state.formData),
       console.log(Object.keys(this.state.formData).length),
@@ -227,11 +227,11 @@ class Form extends Component {
           intent: getIntent(this.state.formData.lon,-180,180,"lon")
         })
       ]),
-      h(Button, {
-        disabled: (this.state.formData.lat == null || this.state.formData.lon == null),
-        text: 'Map',
-        onClick: form_coordinate()
-      }),
+      // h(Button, {
+      //   disabled: (this.state.formData.lat == null || this.state.formData.lon == null),
+      //   text: 'Map',
+      //   onClick: form_coordinate()
+      // }),
       h(FormGroup, {
         helperText: 'General location. e.g. Northern Wisconsin',
         label: 'Location Name'
