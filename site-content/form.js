@@ -103,8 +103,8 @@ class Form extends Component {
     console.log('latlng: ' +this.state.markers1);
     const {markers} = this.state;
     //const lastMarker = markers[markers.length -1];
-    markers.push(e.latlng);
-    all_markers.push([markers.length, e.latlng.lat, e.latlng.lng]);
+    //markers.concat(e.latlng);
+    //all_markers.concat([markers.length, e.latlng.lat, e.latlng.lng]);
     // get the lat and lon of this coor
     var new_coor = [parseFloat(e.latlng.lat), parseFloat(e.latlng.lng)];
     const newState = update(this.state, {
@@ -126,7 +126,6 @@ class Form extends Component {
     var southWest = L.latLng(-85, -200),
     		northEast = L.latLng(85, 200),
     		mybounds = L.latLngBounds(southWest, northEast);
-    var data = all_markers
     //update every key into the json view
     // update the state in the form by the name of keys
     const updater = key => { return event => {
@@ -141,10 +140,11 @@ class Form extends Component {
         return this.setState(newState);
       }
       // update marker []
+      all_markers = [this.state.markers]
     }; };
 
     // const form_coordinate = () =>{ return event => {
-    //   if(this.state.markers1.lat != null && this.state.markers1.lon != null){
+    //   if(this.state.markers1.lat != null || this.state.markers1.lon != null){
     //     var new_coor = [parseFloat(this.state.markers1.lat), parseFloat(this.state.markers1.lon)];
     //     const newState = update(this.state,{markers:{$set: new_coor}});
     //     return this.setState(newState);
@@ -153,7 +153,7 @@ class Form extends Component {
 
     // trying to update this.state.markers as a list containing coordinates
     const form_coordinate = () =>{ return event => {
-      if(this.state.markers1.lat != null && this.state.markers1.lon != null){
+      if(this.state.markers1.lat != null || this.state.markers1.lon != null){
         var new_coor = [parseFloat(this.state.markers1.lat), parseFloat(this.state.markers1.lon)];
         all_markers.push([this.state.markers.length, parseFloat(this.state.markers1.lat), parseFloat(this.state.markers1.lon)]);
         data.push(new_coor);
@@ -164,6 +164,8 @@ class Form extends Component {
     const toggleChecked = (checked) => {
       change_status(checked);
     };
+
+    var data = all_markers
 
 
     return (
@@ -193,7 +195,7 @@ class Form extends Component {
       h('h2', 'Data preview'),
       h(ReactJSON, {src: this.state.formData}),
       h(ReactJSON, {src: this.state.markers}),
-      h(ReactJSON, {src: data}),
+      //h(ReactJSON, {src: data}),
       h(ReactJSON, {src: this.state.markers1}),
       console.log('this coor 2: ' + this.state.markers),
       console.log(this.state.formData),
