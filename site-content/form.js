@@ -432,7 +432,7 @@ class Form extends Component {
         })
       ]),
       h('h3','Validating'),
-      h('p', 'Empty field(s): ' + (17 - Object.keys(this.state.formData).length).toString()),
+      h('p', 'Empty field(s): ' + (19 - Object.keys(this.state.formData).length).toString()),
       h('p',  'Invalid field(s): ' + Object.keys(warning_fields).length.toString()),
       h(Switch, {
         disabled: (this.state.formData.lat == null) || (this.state.formData.lon == null) || (this.state.formData.calendarDate == null),
@@ -593,6 +593,13 @@ class Form extends Component {
                        "error": null,
                        "type": {
                            'parameter': '1 Sigma',
+                           'unit': 'none'
+                       }
+                   },{
+                       "value": "Form submission",
+                       "error": null,
+                       "type": {
+                           'parameter': 'Data source',
                            'unit': 'none'
                        }
                    }]
