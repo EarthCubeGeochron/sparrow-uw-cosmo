@@ -22,7 +22,10 @@ import L from "leaflet";
 import 'leaflet/dist/leaflet.css';
 //import addMarkerClass from './mapping';
 
-
+var sub_status = 0;
+// function refreshPage() {
+//     window.location.reload(false);
+// };
 // Map icon sty;es
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -55,7 +58,6 @@ function change_status(lat, lon, time, input){
     return 1
   }
 }
-
 // return the real time validation
 function getIntent(input, min, max, name){
   if(input==null){
@@ -74,7 +76,16 @@ function getIntent(input, min, max, name){
   }
 }
 
-
+function sub(this1){
+  // const updater_sub = key => { return event => {
+  //     const newState = update(this1.state, {[key]:{$set: 1}});
+  //     return this1.setState(newState);
+  // }};
+  // updater_sub("sub_status");
+  // console.log(this1.state.sub_status);
+  sub_status = 1
+  return this1.submitData.bind(this1);
+}
 
 class Form extends Component {
   //initializing a component
@@ -85,6 +96,7 @@ class Form extends Component {
     this.state = {
       formData: {sample_text: null},
       validate: 0,
+      sub_status: 0,
       // for mapping the markers
       markers: [],
       // for updating
@@ -192,8 +204,6 @@ class Form extends Component {
         )}
       </Map>,
       h('div.shan-form', [
-      h('h2', 'Data preview'),
-      h(ReactJSON, {src: this.state.formData}),
       //h(ReactJSON, {src: this.state.markers}),
       //h(ReactJSON, {src: data}),
       //h(ReactJSON, {src: this.state.markers1}),
@@ -431,9 +441,12 @@ class Form extends Component {
           onChange: updater('notes')
         })
       ]),
-      h('h3','Validating'),
+      h('h2','Validating'),
+      h('h3', 'Data preview'),
+      h(ReactJSON, {src: this.state.formData}),
       h('p', 'Empty field(s): ' + (19 - Object.keys(this.state.formData).length).toString()),
       h('p',  'Invalid field(s): ' + Object.keys(warning_fields).length.toString()),
+      h('p',  'Submission: ' + sub_status.toString()),
       h(Switch, {
         disabled: (this.state.formData.lat == null) || (this.state.formData.lon == null) || (this.state.formData.calendarDate == null),
         label: 'Have all required fields: lat, lon and date.',
@@ -450,12 +463,19 @@ class Form extends Component {
       h(Button, {
         disabled: (checked == 0),
         text: 'Submit',
-        onClick: this.submitData.bind(this)
+        onClick: sub(this)
       }),
+      // h(Button, {
+      //   text: 'Clear',
+      //   onClick: window.location.reload(false)
+      // }),
+      console.log('sub_status: ' + this.state.sub_status),
     ])
   ])
     )
   }
+
+
 
 
   async submitData() { //@ ref to right value "=>" instead of "->"
@@ -596,7 +616,7 @@ class Form extends Component {
                            'unit': 'none'
                        }
                    },{
-                       "value": "Form submission",
+                       "value": 1,
                        "error": null,
                        "type": {
                            'parameter': 'Data source',
@@ -611,17 +631,23 @@ class Form extends Component {
       data: sessionData
     };
     //console.log(data);
+    // const updater = key => { return event => {
+    //     const newState = update(this.state, {[key]:{$set: 1}});
+    //     return this.setState(newState);
+    // }};
     console.log(JSON.stringify(data));
     try {
       const res = await put("/api/v1/import-data/session", data);
+      //() => window.location.reload(false);
       return console.log(res);
     } catch (error) {
       console.error(error);
       // expected output: ReferenceError: nonExistentFunction is not defined
       // Note - error messages will vary depending on browser
     }
-
   };
 }
+
+
 
 export default Form;
