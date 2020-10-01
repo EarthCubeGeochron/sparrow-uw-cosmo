@@ -118,15 +118,15 @@ class Form extends Component {
     const {markers} = this.state;
     const lastMarker = markers[markers.length -1];
     markers.push(e.latlng);
-    all_markers.push([markers.length, e.latlng.lat, e.latlng.lng]);
+    all_markers.push([markers.length, e.latlng.lat.toFixed(5), e.latlng.lng.toFixed(5)]);
     // get the lat and lon of this coor
-    var new_coor = [parseFloat(e.latlng.lat), parseFloat(e.latlng.lng)];
+    var new_coor = [parseFloat(e.latlng.lat.toFixed(5)), parseFloat(e.latlng.lng.toFixed(5))];
     const newState = update(this.state, {
       //markers:{$set: e.latlng},
-      formData:{['lat']:{$set: e.latlng.lat},['lon']:{$set: e.latlng.lng}},
-      markers1:{['lat']:{$set: e.latlng.lat},['lon']:{$set: e.latlng.lng}},})
+      formData:{['lat']:{$set: e.latlng.lat.toFixed(5)},['lon']:{$set: e.latlng.lng.toFixed(5)}},
+      markers1:{['lat']:{$set: e.latlng.lat.toFixed(5)},['lon']:{$set: e.latlng.lng.toFixed(5)}},})
     this.setState(newState);
-    this_coor = [e.latlng.lat, e.latlng.lng];
+    this_coor = [e.latlng.lat.toFixed(5), e.latlng.lng.toFixed(5)];
     console.log('this coor:' +this_coor);
     return this_coor;
   }
