@@ -5,6 +5,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 import React, { Component } from "react";
+import Popup2 from './Popup2';
 import h from 'react-hyperscript';
 import {Map, TileLayer, Popup, Marker, withLeaflet} from "react-leaflet";
 import {FormGroup, InputGroup, Intent, Switch, Alignment} from '@blueprintjs/core';
@@ -14,19 +15,14 @@ import {put} from 'axios';
 import {StatefulComponent} from '@macrostrat/ui-components';
 import ReactJSON from 'react-json-view';
 import update from 'immutability-helper';
-//import {Map, TileLayer, Popup, Marker, withLeaflet} from "react-leaflet";
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
 import iconUrl from 'leaflet/dist/images/marker-icon.png';
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
 import L from "leaflet";
 import 'leaflet/dist/leaflet.css';
-//import addMarkerClass from './mapping';
 
 var sub_status = 0;
-// function refreshPage() {
-//     window.location.reload(false);
-// };
-// Map icon sty;es
+
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl,
@@ -44,13 +40,12 @@ const style = {
   }
 }
 
-// Form component
-// vars for validation -- not 100% successful yet, need to work on this later
+
 var warning_fields = {}
 var checked = 0
 
-function change_status(lat, lon, time, input){
-  if(lat == null || lon == null || time == null){
+function change_status(lat, lon, time, session, sample, input){
+  if(lat == null || lon == null || time == null || session == null || sample == null){
     checked = 0
     return 0
   } else {
@@ -76,14 +71,9 @@ function getIntent(input, min, max, name){
   }
 }
 
+
 function sub(this1){
-  // const updater_sub = key => { return event => {
-  //     const newState = update(this1.state, {[key]:{$set: 1}});
-  //     return this1.setState(newState);
-  // }};
-  // updater_sub("sub_status");
-  // console.log(this1.state.sub_status);
-  sub_status = 1
+  //alert('Oh look, an alert!')
   return this1.submitData.bind(this1);
 }
 
@@ -99,6 +89,7 @@ class Form extends Component {
       sub_status: 0,
       // for mapping the markers
       markers: [],
+      showPopup: null,
       // for updating
       markers1: {lat: null,lon: null}
     };
@@ -155,15 +146,7 @@ class Form extends Component {
       //all_markers = [this.state.markers]
     }; };
 
-    // const form_coordinate = () =>{ return event => {
-    //   if(this.state.markers1.lat != null || this.state.markers1.lon != null){
-    //     var new_coor = [parseFloat(this.state.markers1.lat), parseFloat(this.state.markers1.lon)];
-    //     const newState = update(this.state,{markers:{$set: new_coor}});
-    //     return this.setState(newState);
-    //   }
-    // }; };
 
-    // trying to update this.state.markers as a list containing coordinates
     const form_coordinate = () =>{ return event => {
       if(this.state.markers1.lat != null || this.state.markers1.lon != null){
         var new_coor = [parseFloat(this.state.markers1.lat), parseFloat(this.state.markers1.lon)];
@@ -172,9 +155,8 @@ class Form extends Component {
       }
     }; };
 
-    // for validating, TBC
-    const toggleChecked = (lat, lon, time, checked) => {
-      return change_status(lat, lon, time, checked);
+    const toggleChecked = (lat, lon, time, session, sample, checked) => {
+      return change_status(lat, lon, time, session, sample, checked);
     };
 
     var data = all_markers
@@ -204,9 +186,7 @@ class Form extends Component {
         )}
       </Map>,
       h('div.shan-form', [
-      //h(ReactJSON, {src: this.state.markers}),
-      //h(ReactJSON, {src: data}),
-      //h(ReactJSON, {src: this.state.markers1}),
+      console.log('popup: ' + this.state.showPopup),
       console.log('this coor 2: ' + this.state.markers),
       console.log(this.state.formData),
       console.log(Object.keys(this.state.formData).length),
@@ -237,11 +217,6 @@ class Form extends Component {
           intent: getIntent(this.state.formData.lon,-180,180,"lon")
         })
       ]),
-      // h(Button, {
-      //   disabled: (this.state.formData.lat == null || this.state.formData.lon == null),
-      //   text: 'Map',
-      //   onClick: form_coordinate()
-      // }),
       h(FormGroup, {
         helperText: 'General location. e.g. Northern Wisconsin',
         label: 'Location Name'
@@ -446,12 +421,14 @@ class Form extends Component {
       h(ReactJSON, {src: this.state.formData}),
       h('p', 'Empty field(s): ' + (19 - Object.keys(this.state.formData).length).toString()),
       h('p',  'Invalid field(s): ' + Object.keys(warning_fields).length.toString()),
-      h('p',  'Submission: ' + sub_status.toString()),
+      //h('p',  'Submission: ' + sub_status.toString()),
+      //h('p', 'popup: ' + this.state.showPopup.toString()),
       h(Switch, {
-        disabled: (this.state.formData.lat == null) || (this.state.formData.lon == null) || (this.state.formData.calendarDate == null),
-        label: 'Have all required fields: lat, lon and date.',
+        disabled: (this.state.formData.lat == null) || (this.state.formData.lon == null) || (this.state.formData.calendarDate == null) || (this.state.formData.session_index_text == null) || (this.state.formData.sample_text == null),
+        label: 'Have all required fields: lat, lon, date, sample name, session.',
         defaultChecked: false,
-        checked: toggleChecked(this.state.formData.lat, this.state.formData.lon, this.state.formData.calendarDate,checked),
+        //checked: checked,
+        checked: toggleChecked(this.state.formData.lat, this.state.formData.lon, this.state.formData.calendarDate, this.state.formData.session_index_text, this.state.formData.sample_text, checked),
         //onChange: toggleChecked(this.state.formData.lat, this.state.formData.lon, this.state.formData.calendarDate,checked),
         innerLabelChecked:"Yes",
         innerLabel:"No",
@@ -463,12 +440,14 @@ class Form extends Component {
       h(Button, {
         disabled: (checked == 0),
         text: 'Submit',
-        onClick: sub(this)
+        onClick: ()=>{
+          this.submitData(this),
+          alert('Successful!')}
       }),
-      // h(Button, {
-      //   text: 'Clear',
-      //   onClick: window.location.reload(false)
-      // }),
+      h(Button, {
+        text: 'Clear',
+        onClick: ()=>{window.location.reload(false)}
+      }),
       console.log('sub_status: ' + this.state.sub_status),
     ])
   ])
@@ -630,15 +609,10 @@ class Form extends Component {
       filename: null,
       data: sessionData
     };
-    //console.log(data);
-    // const updater = key => { return event => {
-    //     const newState = update(this.state, {[key]:{$set: 1}});
-    //     return this.setState(newState);
-    // }};
+
     console.log(JSON.stringify(data));
     try {
       const res = await put("/api/v1/import-data/session", data);
-      //() => window.location.reload(false);
       return console.log(res);
     } catch (error) {
       console.error(error);

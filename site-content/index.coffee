@@ -3,6 +3,7 @@ import aboutText from './about-the-lab.md'
 import h from 'react-hyperscript'
 #import Carto from './mapping'
 import Form from './form'
+import Popup2 from './Popup2'
 import 'leaflet/dist/leaflet.css'
 
 #console.log(test)
