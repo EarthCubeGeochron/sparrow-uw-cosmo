@@ -9,6 +9,7 @@ export MAPBOX_API_TOKEN="pk.eyJ1IjoiZGF2ZW5xdWlubiIsImEiOiJjanZ1eWwxMjAwNmRvM3lz
 
 export SPARROW_LAB_NAME="Cosmogenic Nuclides Lab"
 export COMPOSE_PROJECT_NAME="UWCosmo"
+export SPARROW_DOMAIN="sparrow-cosmo.geoscience.wisc.edu"
 
 pipeline="$cosmo/import_pipeline"
 
@@ -24,5 +25,5 @@ export SPARROW_SITE_CONTENT="$cosmo/site-content"
 export SPARROW_PLUGIN_DIR="$cosmo/backend-plugins"
 
 if [ -f "$cosmo/sparrow-config.overrides.sh" ]; then
-	source "$cosmos/sparrow-config.overrides.sh"
+	source "$cosmo/sparrow-config.overrides.sh"
 fi
