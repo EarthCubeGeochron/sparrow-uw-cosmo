@@ -22,3 +22,7 @@ export SPARROW_INIT_SQL="$pipeline/sql"
 export SPARROW_SITE_CONTENT="$cosmo/site-content"
 # A python module that contains Sparrow Python-side plugins
 export SPARROW_PLUGIN_DIR="$cosmo/backend-plugins"
+
+if [ -f "$cosmo/sparrow-config.overrides.sh" ]; then
+	source "$cosmos/sparrow-config.overrides.sh"
+fi

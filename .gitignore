@@ -2,3 +2,4 @@ db-backups
 node_modules
 
 Sparrow
+sparrow-config.overrides.sh
