@@ -110,8 +110,7 @@ class CosmoImporter(BaseImporter):
             val = self.datum(analysis, 'Publ-Al26-Age', 0, error=0, unit='years')
             dc.append(val)
 
-        v = row.loc['Publication']
-        #+ '; source: http://expage.github.io/data.html'
+        v = row.loc['Publication'] + '; source: http://expage.github.io/data.html'
         val = self.datum(analysis,"Data source", v)
         dc.append(val)
 
