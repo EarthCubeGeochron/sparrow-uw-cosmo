@@ -7,4 +7,4 @@ Research in the _Wisc Cosmogenic Nuclide Lab_ at **University of Wisconsin-Madis
 The _Wisc Cosmogenic Nuclide Lab_ is a partner in the
 NSF EarthCube Geochronology Infrastructure project. This
 [**Sparrow**](https://sparrow-data.org) lab information management system
-is a product of this collaboration. Go to the [**submitting form**](/catalog).
+is a product of this collaboration. Go to the [**submitting form**](/admin) under the admin tab to import individual data. Use sparrow import-data function in the linux terminal to import legacy data from excel files.
