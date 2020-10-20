@@ -2,7 +2,8 @@ from os import environ
 from click import command, option, echo, secho, style
 from pathlib import Path
 from sparrow import Database
-from sparrow.import_helpers import SparrowImportError, working_directory
+from sparrow.import_helpers import SparrowImportError
+from sparrow.util import working_directory
 from .import_data import import_datafile
 import os
 

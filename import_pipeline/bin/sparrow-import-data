@@ -1,9 +1,9 @@
-#!/usr/bin/env zsh
+#!/bin/bash
 # Description: Import cosmogenic nuclide XLSX data
 
 # This script runs on the host system and kicks off the
 # import process within a docker container
-import_pipeline="${0:h:h:r}"
+import_pipeline="${SPARROW_CONFIG_DIR}/import_pipeline"
 
 # Run within container, mounting Sparrow data directory
 # and importer code.
