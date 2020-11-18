@@ -198,7 +198,7 @@ class Form extends Component {
         label: 'Latitude'
       }, [
         h(InputGroup, {
-          id: 'lat-text-inout',
+          id: 'lat-text-input',
           placeholder: 'Lat value',
           value: this.state.formData.lat,
           onChange: updater('lat'),
@@ -210,7 +210,7 @@ class Form extends Component {
         label: 'Longitude'
       }, [
         h(InputGroup, {
-          id: 'lon-text-inout',
+          id: 'lon-text-input',
           placeholder: 'Lon value',
           value: this.state.formData.lon,
           onChange:updater('lon'),
@@ -222,7 +222,7 @@ class Form extends Component {
         label: 'Location Name'
       }, [
         h(InputGroup, {
-          id: 'location-text-inout',
+          id: 'location-text-input',
           placeholder: 'Location',
           value: this.state.formData.location,
           onChange: updater('location')
@@ -233,7 +233,7 @@ class Form extends Component {
         label: 'Elevation'
       }, [
         h(InputGroup, {
-          id: 'elevation-text-inout',
+          id: 'elevation-text-input',
           placeholder: 'Elevation value',
           value: this.state.formData.elevation,
           onChange: updater('elevation')
@@ -314,7 +314,7 @@ class Form extends Component {
         label: 'Shielding'
       }, [
         h(InputGroup, {
-          id: 'shielding-text-inout',
+          id: 'shielding-text-input',
           placeholder: 'Shielding value',
           value: this.state.formData.shielding,
           onChange: updater('shielding'),
@@ -322,27 +322,27 @@ class Form extends Component {
         })
       ]),
       h(FormGroup, {
-        helperText: '0-100',
+        helperText: '0-200 grams',
         label: 'Quartz'
       }, [
         h(InputGroup, {
-          id: 'quartz-text-inout',
+          id: 'quartz-text-input',
           placeholder: 'Quartz value',
           value: this.state.formData.quartz,
           onChange: updater('quartz'),
-          intent: getIntent(this.state.formData.quartz,0,100,"quartz")
+          intent: getIntent(this.state.formData.quartz,0,200,"quartz")
         })
       ]),
       h(FormGroup, {
-        helperText: '0-500',
-        label: '9Be Carrier'
+        helperText: '0-5000 micrograms',
+        label: '9Be Carrier Weight'
       }, [
         h(InputGroup, {
-          id: '9be-text-inout',
+          id: '9be-text-input',
           placeholder: '9Be',
           value: this.state.formData._9Be,
           onChange: updater('_9Be'),
-          intent: getIntent(this.state.formData._9Be,0,500,"9Be")
+          intent: getIntent(this.state.formData._9Be,0,5000,"9Be")
         })
       ]),
       h(FormGroup, {
@@ -350,7 +350,7 @@ class Form extends Component {
         label: '10Be/9Be'
       }, [
         h(InputGroup, {
-          id: 'be-ratio-text-inout',
+          id: 'be-ratio-text-input',
           placeholder: '10Be/9Be value',
           value: this.state.formData.Be_ratio,
           onChange: updater('Be_ratio'),
@@ -362,7 +362,7 @@ class Form extends Component {
         label: '1 Sigma'
       }, [
         h(InputGroup, {
-          id: '1sig-text-inout',
+          id: '1sig-text-input',
           placeholder: '1-sigma value',
           value: this.state.formData._1_sigma,
           onChange: updater('_1_sigma'),
@@ -370,27 +370,27 @@ class Form extends Component {
         })
       ]),
       h(FormGroup, {
-        helperText: '0 to 1E-10, atoms/g',
+        helperText: '0 to 1E-9 atoms/g',
         label: '10Be'
       }, [
         h(InputGroup, {
-          id: '10be-text-inout',
+          id: '10be-text-input',
           placeholder: '10Be value',
           value: this.state.formData._10Be,
           onChange: updater('_10Be'),
-          intent: getIntent(this.state.formData._10Be,0,0.000000001,"10Be")
+          intent: getIntent(this.state.formData._10Be,0,0.00000001,"10Be")
         })
       ]),
       h(FormGroup, {
-        helperText: '0 - 700 ka',
+        helperText: '0-5000 ka',
         label: '10Be Age'
       }, [
         h(InputGroup, {
-          id: '10be-age-text-inout',
+          id: '10be-age-text-input',
           placeholder: 'Age value',
           value: this.state.formData.age,
           onChange: updater('age'),
-          intent: getIntent(this.state.formData.age,0,700,"age")
+          intent: getIntent(this.state.formData.age,0,5000,"age")
         })
       ]),
       h(FormGroup, {
@@ -398,7 +398,7 @@ class Form extends Component {
         label: 'Uncertainty'
       }, [
         h(InputGroup, {
-          id: 'uncertainty-text-inout',
+          id: 'uncertainty-text-input',
           placeholder: 'Uncertainty value',
           value: this.state.formData.uncertainty,
           onChange: updater('uncertainty'),
@@ -410,7 +410,7 @@ class Form extends Component {
         label: 'Notes'
       }, [
         h(InputGroup, {
-          id: 'notes-text-inout',
+          id: 'notes-text-input',
           placeholder: 'Notes or comments',
           value: this.state.formData.notes,
           onChange: updater('notes')
