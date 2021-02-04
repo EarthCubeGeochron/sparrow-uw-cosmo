@@ -239,7 +239,7 @@ class Form extends Component {
           onChange: updater('elevation')
         })
       ]),
-      h('h2', 'Date of collecting'),
+      h('h3', 'Date of collecting'),
       h(DatePicker,{
         value:this.state.formData.calendarDate,
         onChange: result => {
@@ -249,7 +249,7 @@ class Form extends Component {
       }),
       h('h2', 'General information of the sample'),
 
-        h(FormGroup, {
+      h(FormGroup, {
           helperText: 'Enter the import name. Leave it blank if NA',
           label: 'Import Name'
         }, [
@@ -321,6 +321,46 @@ class Form extends Component {
           intent: getIntent(this.state.formData.shielding,0,1,"shielding")
         })
       ]),
+
+      h(FormGroup, {
+        helperText: 'thickness in cm',
+        label: 'Thickness'
+      }, [
+        h(InputGroup, {
+          id: 'thickness-text-input',
+          placeholder: 'Thickness',
+          value: this.state.formData.thickness,
+          onChange: updater('thickness'),
+          intent: getIntent(this.state.formData.thickness,0,1e+10,"thickness")
+        })
+      ]),
+
+      h(FormGroup, {
+        helperText: 'borehole depth in meters',
+        label: 'Depth'
+      }, [
+        h(InputGroup, {
+          id: 'depth-text-input',
+          placeholder: 'Depth',
+          value: this.state.formData.depth,
+          onChange: updater('depth'),
+          intent: getIntent(this.state.formData.depth,0,1e+10,"depth")
+        })
+      ]),
+
+      h(FormGroup, {
+        helperText: 'Atmpspheric pressure in hPa',
+        label: 'Atmospheric pressure'
+      }, [
+        h(InputGroup, {
+          id: 'atm_pressure-text-input',
+          placeholder: 'Pressure',
+          value: this.state.formData.atm_pressure,
+          onChange: updater('atm_pressure'),
+          intent: Intent.PRIMARY
+        })
+      ]),
+
       h(FormGroup, {
         helperText: '0-200 grams',
         label: 'Quartz'
@@ -405,6 +445,47 @@ class Form extends Component {
           intent: getIntent(this.state.formData.uncertainty,0,0.000000001,"uncertainty")
         })
       ]),
+      h('h2','Lab information'),
+      h(FormGroup, {
+        helperText: 'Lab name',
+        label: 'Lab name'
+      }, [
+        h(InputGroup, {
+          id: 'lab_name-text-input',
+          placeholder: 'Lab name',
+          value: this.state.formData.lab_name,
+          onChange: updater('lab_name')
+        })
+      ]),
+
+      h(FormGroup, {
+        helperText: 'Lab standard',
+        label: 'Lab standard'
+      }, [
+        h(InputGroup, {
+          id: 'lab_std-text-input',
+          placeholder: 'Lab standard',
+          value: this.state.formData.lab_std,
+          onChange: updater('lab_std')
+        })
+      ]),
+      h('h3', 'Lab date'),
+      h(DatePicker,{
+        value:this.state.formData.lab_date,
+        onChange: result => {
+          const newState = update(this.state, {formData: {lab_date: {$set: result}}});
+          return this.setState(newState);
+        }
+      }),
+      h('h3', 'Embargo date'),
+      h(DatePicker,{
+        value:this.state.formData.embargo_date,
+        onChange: result => {
+          const newState = update(this.state, {formData: {embargo_date: {$set: result}}});
+          return this.setState(newState);
+        }
+      }),
+
       h(FormGroup, {
         helperText: 'Enter additional information',
         label: 'Notes'
@@ -419,7 +500,7 @@ class Form extends Component {
       h('h2','Validating'),
       h('h3', 'Data preview'),
       h(ReactJSON, {src: this.state.formData}),
-      h('p', 'Empty field(s): ' + (19 - Object.keys(this.state.formData).length).toString()),
+      h('p', 'Empty field(s): ' + (26 - Object.keys(this.state.formData).length).toString()),
       h('p',  'Invalid field(s): ' + Object.keys(warning_fields).length.toString()),
       //h('p',  'Submission: ' + sub_status.toString()),
       //h('p', 'popup: ' + this.state.showPopup.toString()),
@@ -458,7 +539,7 @@ class Form extends Component {
 
 
   async submitData() { //@ ref to right value "=>" instead of "->"
-    var lat_data, lon_data, uncertainty_data, session_index_data, age_data, shielding_data, elevation_data, sigma_data, quartz_data, _9Be_data, _10Be_data, ratio_Be_data;
+    var lat_data, lon_data, atm_pressure, thickness, depth, uncertainty_data, session_index_data, age_data, shielding_data, elevation_data, sigma_data, quartz_data, _9Be_data, _10Be_data, ratio_Be_data;
 
     lat_data = parseFloat(this.state.formData.lat);
     lon_data = parseFloat(this.state.formData.lon);
@@ -523,6 +604,24 @@ class Form extends Component {
       ratio_Be_data = parseFloat(this.state.formData.Be_ratio);
     }
 
+    if(this.state.formData.atm_pressure == null){
+      atm_pressure = 0;
+    } else {
+      atm_pressure = parseFloat(this.state.formData.atm_pressure);
+    }
+
+    if(this.state.formData.thickness == null){
+      thickness = 0;
+    } else {
+      thickness = parseFloat(this.state.formData.thickness);
+    }
+
+    if(this.state.formData.depth == null){
+      depth = 0;
+    } else {
+      depth = parseFloat(this.state.formData.depth);
+    }
+
 
     console.log("placeholder");
 
@@ -535,11 +634,14 @@ class Form extends Component {
                    "location_name":  this.state.formData.location,
                    "location": {
                      "type": "Point",
-                     "coordinates": [
-                       lon_data,
-                       lat_data
-                  ]
-                }
+                     "coordinates": [lon_data,lat_data]},
+                     "atm pressure": atm_pressure,
+                     "thickness": thickness,
+                     "depth": depth,
+                     "lab name":this.state.formData.lab_name,
+                     "lab date":this.state.formData.lab_date,
+                     "lab standard":this.state.formData.lab_std,
+                     "embargo_date":this.state.formData.embargo_date
                },
                "analysis": [{
                    // Can't seem to get or create this instance from the database
