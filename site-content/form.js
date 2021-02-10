@@ -1,7 +1,7 @@
 /*
  * decaffeinate suggestions:
  * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
+ * DS207: Consider shorter variations of null checkss
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 import React, { Component } from "react";
