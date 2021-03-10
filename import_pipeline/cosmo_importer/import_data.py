@@ -28,6 +28,12 @@ class CosmoImporter(BaseImporter):
         sample.location = self.location(lon, lat)
         sample.elevation=row.loc['Elev(masl)']
 
+        #added fields
+        sample.lab_name=row.loc['Lab']
+        sample.lab_standard=row.loc['Lab-Std']
+        sample.lab_date=row.loc['Lab_date']
+        sample.embargo_name=row.loc['Embargo_date']
+
         meas = self.models.session()
         #nuclide = row.loc['Nuclide']
 
