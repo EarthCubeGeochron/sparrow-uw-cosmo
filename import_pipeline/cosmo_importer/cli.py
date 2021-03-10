@@ -4,11 +4,12 @@ from pathlib import Path
 from sparrow import Database
 from sparrow.import_helpers import SparrowImportError
 from sparrow.util import working_directory
+from sparrow.plugins import SparrowPlugin
 from .import_data import import_datafile
 import os
 
 @command()
-def cli(stop_on_error=False, verbose=False):
+def cosmo_command(stop_on_error=False, verbose=False):
     """
     Import cosmogenic nuclide XLSX files
     """
@@ -40,3 +41,10 @@ def cli(stop_on_error=False, verbose=False):
             continue
         print(f)
         import_datafile(db,f)
+
+# https://github.com/EarthCubeGeochron/Sparrow/blob/master/backend/sparrow/ext/pychron/__init__.py
+class CosmoBulkImportPlugin(SparrowPlugin):
+    name = "cosmo-bulk-importer"
+
+    def on_setup_cli(self, cli):
+        cli.add_command(cosmo_command)
