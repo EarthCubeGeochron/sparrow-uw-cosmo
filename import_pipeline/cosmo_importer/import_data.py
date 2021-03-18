@@ -33,6 +33,7 @@ class CosmoImporter(BaseImporter):
         sample.lab_standard=row.loc['Lab-Std']
         sample.lab_date=row.loc['Lab_date']
         sample.embargo_name=row.loc['Embargo_date']
+        sample.atm_pressure=row.loc['Atm-Pressure']
 
         meas = self.models.session()
         #nuclide = row.loc['Nuclide']
