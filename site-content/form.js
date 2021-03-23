@@ -630,18 +630,19 @@ class Form extends Component {
                "name": this.state.formData.import_name,
                "sample": {
                    "name": this.state.formData.sample_text,
+                   "lab_name":this.state.formData.lab_name,
+                   "lab_date":this.state.formData.lab_date,
+                   "lab_standard":this.state.formData.lab_std,
+                   "embargo_date":this.state.formData.embargo_date,
                    "elevation":elevation_data,
                    "location_name":  this.state.formData.location,
                    "location": {
                      "type": "Point",
-                     "coordinates": [lon_data,lat_data]},
-                     "atm pressure": atm_pressure,
-                     "thickness": thickness,
-                     "depth": depth,
-                     "lab name":this.state.formData.lab_name,
-                     "lab date":this.state.formData.lab_date,
-                     "lab standard":this.state.formData.lab_std,
-                     "embargo_date":this.state.formData.embargo_date
+                     "coordinates": [lon_data,lat_data]
+                  },
+                  "atm_pressure": atm_pressure,
+                  "thickness": thickness,
+                  "depth": depth
                },
                "analysis": [{
                    // Can't seem to get or create this instance from the database
@@ -714,7 +715,7 @@ class Form extends Component {
 
     console.log(JSON.stringify(data));
     try {
-      const res = await put("/api/v1/import-data/session", data);
+      const res = await put("/api/v2/import-data/session", data);
       return console.log(res);
     } catch (error) {
       console.error(error);
