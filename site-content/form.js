@@ -715,7 +715,7 @@ class Form extends Component {
 
     console.log(JSON.stringify(data));
     try {
-      const res = await put("/api/v2/import-data/session", data);
+      const res = await put("/api/v1/import-data/session", data);
       return console.log(res);
     } catch (error) {
       console.error(error);
@@ -725,6 +725,7 @@ class Form extends Component {
   };
 }
 
-
+res = {"filename":null,
+"data":{"date":"2021-03-01T06:00:00.000Z","name":"test31","sample":{"name":"test31","lab_name":"test31","lab_date":"2021-03-01T06:00:00.000Z","lab_standard":"3131","embargo_date":"2021-03-01T06:00:00.000Z","elevation":1,"location_name":"test31","location":{"type":"Point","coordinates":[-132.48651,-1.71849]},"atm_pressure":1,"thickness":1,"depth":1},"analysis":[{"datum":[{"value":0,"error":null,"type":{"parameter":"9Be carrier","unit":""}},{"value":0,"error":null,"type":{"parameter":"10Be","unit":"atoms/g"}},{"value":0,"error":null,"type":{"parameter":"10Be/9Be","unit":"none"}},{"value":2,"error":0,"type":{"parameter":"10Be Age","unit":"ka"}},{"value":1,"error":null,"type":{"parameter":"Sheilding","unit":"none"}},{"value":1,"error":null,"type":{"parameter":"Quartz","unit":"none"}},{"value":3e-10,"error":null,"type":{"parameter":"1 Sigma","unit":"none"}},{"value":1,"error":null,"type":{"parameter":"Data source","unit":"none"}}]}]}}
 
 export default Form;
