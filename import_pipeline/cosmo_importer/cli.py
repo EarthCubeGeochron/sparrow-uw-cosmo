@@ -5,10 +5,12 @@ from sparrow import Database
 from sparrow.import_helpers import SparrowImportError
 from sparrow.util import working_directory
 from .import_data import import_datafile
+from sparrow.cli.util import with_database
 import os
 
 @command()
-def cli(stop_on_error=False, verbose=False):
+@with_database
+def cli(db, stop_on_error=False, verbose=False):
     """
     Import cosmogenic nuclide XLSX files
     """
@@ -24,15 +26,15 @@ def cli(stop_on_error=False, verbose=False):
 
     #return
 
-    db = Database()
+    #db = Database()
 
     #Temporary
-    print("Removing old data")
-    db.engine.execute("TRUNCATE TABLE datum CASCADE;")
-    db.engine.execute("TRUNCATE TABLE datum_type CASCADE;")
-    db.engine.execute("TRUNCATE TABLE analysis CASCADE;")
-    db.engine.execute("TRUNCATE TABLE session CASCADE;")
-    db.engine.execute("TRUNCATE TABLE sample CASCADE;")
+    # print("Removing old data")
+    # db.engine.execute("TRUNCATE TABLE datum CASCADE;")
+    # db.engine.execute("TRUNCATE TABLE datum_type CASCADE;")
+    # db.engine.execute("TRUNCATE TABLE analysis CASCADE;")
+    # db.engine.execute("TRUNCATE TABLE session CASCADE;")
+    # db.engine.execute("TRUNCATE TABLE sample CASCADE;")
 
     files = path.glob("**/*.xlsx")
     for f in files:
