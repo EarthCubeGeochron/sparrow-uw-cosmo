@@ -67,63 +67,67 @@ class CosmoImporter(BaseImporter):
 
         analysis.material = self.material(nuclide).id
 
+        # self.db.session.commit()
+
         dc = []
+
         v = row.loc['Thickn(cm)']
         val = self.datum(analysis, "Thickness", v, unit='cm')
         dc.append(val)
 
-        v = row.loc['Density(g/cm3)']
-        val = self.datum(analysis,"Density", v, unit='g/cm^3')
-        dc.append(val)
+        # v = row.loc['Density(g/cm3)']
+        # val = self.datum(analysis,"Density", v, unit='g/cm^3')
+        # dc.append(val)
 
-        v = row.loc['Shield']
-        val = self.datum(analysis,"Shielding", v)
-        dc.append(val)
+        # v = row.loc['Shield']
+        # val = self.datum(analysis,"Shielding", v)
+        # dc.append(val)
+        #
+        # v = row.loc['Erosion']
+        # val = self.datum(analysis,"Erosion", v)
+        # dc.append(val)
 
-        v = row.loc['Erosion']
-        val = self.datum(analysis,"Erosion", v)
-        dc.append(val)
-
-        v_be = row.loc['10Be-conc(at/g)']
-        e_be = row.loc['10Be-unc(at/g)']
-        v_al = row.loc['26Al-conc(at/g)']
-        e_al = row.loc['26Al-unc(at/g)']
-        if v_al == 0:
-            val = self.datum(analysis, 'Be-concent', v_be, error=e_be, unit='at/g')
-            dc.append(val)
-        else:
-            val = self.datum(analysis, 'Be-concent', v_be, error=e_be, unit='at/g')
-            dc.append(val)
-            val = self.datum(analysis, 'Al-content', v_al, error=e_al, unit='at/g')
-            dc.append(val)
-
-        age_be = row.loc['Publ-10-age(yr)']
-        age_be_unc = row.loc['Publ-10-unc(yr)']
-        age_al = row.loc['Publ-26-age(yr)']
-        age_al_unc = row.loc['Publ-26-unc(yr)']
-        if isinstance(age_be, int) and isinstance(age_al, int):
-            val = self.datum(analysis, 'Publ-Be10-Age', age_be, error=age_be_unc, unit='years')
-            dc.append(val)
-            val = self.datum(analysis, 'Publ-Al26-Age', age_al, error=age_al_unc, unit='years')
-            dc.append(val)
-        elif isinstance(age_be, int):
-            val = self.datum(analysis, 'Publ-Be10-Age', age_be, error=age_be_unc, unit='years')
-            dc.append(val)
-            val = self.datum(analysis, 'Publ-Al26-Age', 0, error=0, unit='years')
-            dc.append(val)
-        else:
-            val = self.datum(analysis, 'Publ-Be10-Age', 0, error=0, unit='years')
-            dc.append(val)
-            val = self.datum(analysis, 'Publ-Al26-Age', 0, error=0, unit='years')
-            dc.append(val)
-
-        v = row.loc['Publication'] + '; source: http://expage.github.io/data.html'
-        val = self.datum(analysis,"Data source", v)
-        dc.append(val)
+        # v_be = row.loc['10Be-conc(at/g)']
+        # e_be = row.loc['10Be-unc(at/g)']
+        # v_al = row.loc['26Al-conc(at/g)']
+        # e_al = row.loc['26Al-unc(at/g)']
+        # if v_al == 0:
+        #     val = self.datum(analysis, 'Be-concent', v_be, error=e_be, unit='at/g')
+        #     dc.append(val)
+        # else:
+        #     val = self.datum(analysis, 'Be-concent', v_be, error=e_be, unit='at/g')
+        #     dc.append(val)
+        #     val = self.datum(analysis, 'Al-content', v_al, error=e_al, unit='at/g')
+        #     dc.append(val)
+        #
+        # age_be = row.loc['Publ-10-age(yr)']
+        # age_be_unc = row.loc['Publ-10-unc(yr)']
+        # age_al = row.loc['Publ-26-age(yr)']
+        # age_al_unc = row.loc['Publ-26-unc(yr)']
+        # if isinstance(age_be, int) and isinstance(age_al, int):
+        #     val = self.datum(analysis, 'Publ-Be10-Age', age_be, error=age_be_unc, unit='years')
+        #     dc.append(val)
+        #     val = self.datum(analysis, 'Publ-Al26-Age', age_al, error=age_al_unc, unit='years')
+        #     dc.append(val)
+        # elif isinstance(age_be, int):
+        #     val = self.datum(analysis, 'Publ-Be10-Age', age_be, error=age_be_unc, unit='years')
+        #     dc.append(val)
+        #     val = self.datum(analysis, 'Publ-Al26-Age', 0, error=0, unit='years')
+        #     dc.append(val)
+        # else:
+        #     val = self.datum(analysis, 'Publ-Be10-Age', 0, error=0, unit='years')
+        #     dc.append(val)
+        #     val = self.datum(analysis, 'Publ-Al26-Age', 0, error=0, unit='years')
+        #     dc.append(val)
+        #
+        # v = row.loc['Publication'] + '; source: http://expage.github.io/data.html'
+        # val = self.datum(analysis,"Data source", v)
+        # dc.append(val)
 
         analysis.datum_collection = dc
 
         analysis._session = meas
+        #analysis.session_id = 1
         return analysis
 
     def model_output(self, meas, row):
@@ -144,6 +148,7 @@ class CosmoImporter(BaseImporter):
             # Special row for interror
             d.interror = row.loc[k+'_Interr']
         analysis._session = meas
+        #analysis.session_id = meas
         self.db.session.add(analysis)
         return analysis
 
