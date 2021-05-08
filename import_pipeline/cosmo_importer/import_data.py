@@ -34,6 +34,9 @@ class CosmoImporter(BaseImporter):
         sample.lab_date=row.loc['Lab_date']
         sample.embargo_name=row.loc['Embargo_date']
         sample.atm_pressure=row.loc['Atm-Pressure']
+        sample.compilation = row.loc['Compilation']
+        sample.reference = row.loc['Reference']
+
 
         meas = self.models.session()
         #nuclide = row.loc['Nuclide']
@@ -86,7 +89,7 @@ class CosmoImporter(BaseImporter):
         v = row.loc['Shield']
         val = self.datum(analysis,"Shielding", v)
         dc.append(val)
-        
+
         v = row.loc['Erosion']
         val = self.datum(analysis,"Erosion", v)
         dc.append(val)
@@ -103,7 +106,7 @@ class CosmoImporter(BaseImporter):
             dc.append(val)
             val = self.datum(analysis, 'Al-content', v_al, error=e_al, unit='at/g')
             dc.append(val)
-        
+
         age_be = row.loc['Publ-10-age(yr)']
         age_be_unc = row.loc['Publ-10-unc(yr)']
         age_al = row.loc['Publ-26-age(yr)']
@@ -123,10 +126,7 @@ class CosmoImporter(BaseImporter):
             dc.append(val)
             val = self.datum(analysis, 'Publ-Al26-Age', 0, error=0, unit='years')
             dc.append(val)
-        
-        # v = row.loc['Publication'] + '; source: http://expage.github.io/data.html'
-        # val = self.datum(analysis,"Data source", v)
-        # dc.append(val)
+
 
         analysis.datum_collection = dc
 

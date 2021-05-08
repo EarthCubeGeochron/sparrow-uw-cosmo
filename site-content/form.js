@@ -662,13 +662,43 @@ class Form extends Component {
             }),
           ]
         ),
+        h(
+          FormGroup,
+          {
+            helperText: "Enter the compilation source",
+            label: "Compilation",
+          },
+          [
+            h(InputGroup, {
+              id: "compilation-text-input",
+              placeholder: "Compilation",
+              value: this.state.formData.compilation,
+              onChange: updater("compilation"),
+            }),
+          ]
+        ),
+        h(
+          FormGroup,
+          {
+            helperText: "Enter the original reference",
+            label: "Reference",
+          },
+          [
+            h(InputGroup, {
+              id: "ref-text-input",
+              placeholder: "Reference",
+              value: this.state.formData.reference,
+              onChange: updater("reference"),
+            }),
+          ]
+        ),
         h("h2", "Validating"),
         h("h3", "Data preview"),
         h(ReactJSON, { src: this.state.formData }),
         h(
           "p",
           "Empty field(s): " +
-            (26 - Object.keys(this.state.formData).length).toString()
+            (28 - Object.keys(this.state.formData).length).toString()
         ),
         h(
           "p",
@@ -831,6 +861,8 @@ class Form extends Component {
         lab_date: this.state.formData.lab_date,
         lab_standard: this.state.formData.lab_std,
         embargo_date: this.state.formData.embargo_date,
+        compilation: this.state.formData.compilation,
+        reference: this.state.formData.reference,
         elevation: elevation_data,
         location_name: this.state.formData.location,
         location: {
