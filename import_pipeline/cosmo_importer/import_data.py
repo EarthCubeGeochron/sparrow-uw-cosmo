@@ -37,6 +37,10 @@ class CosmoImporter(BaseImporter):
         sample.compilation = row.loc['Compilation']
         sample.reference = row.loc['Reference']
         sample.thickness = row.loc['Thickn(cm)']
+        sample.sample_name = row.loc['Sample']
+        sample.group_id = row.loc['Group-ID']
+        sample.pub_year = row.loc['Publ-year']
+        sample.sample_type = row.loc['Sample-type']
 
 
         meas = self.models.session()
