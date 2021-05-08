@@ -36,6 +36,7 @@ class CosmoImporter(BaseImporter):
         sample.atm_pressure=row.loc['Atm-Pressure']
         sample.compilation = row.loc['Compilation']
         sample.reference = row.loc['Reference']
+        sample.thickness = row.loc['Thickn(cm)']
 
 
         meas = self.models.session()
