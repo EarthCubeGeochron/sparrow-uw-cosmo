@@ -448,6 +448,50 @@ class Form extends Component {
         h(
           FormGroup,
           {
+            helperText: "boulder height in cm",
+            label: "Boulder Height",
+          },
+          [
+            h(InputGroup, {
+              id: "boulder-height-text-input",
+              placeholder: "Boulder Height",
+              value: this.state.formData.boulder_height,
+              onChange: updater("boulder height"),
+              intent: getIntent(
+                this.state.formData.boulder_height,
+                0,
+                300,
+                "boulder height"
+              ),
+            }),
+          ]
+        ),
+
+        h(
+          FormGroup,
+          {
+            helperText: "density in g/cm3",
+            label: "Density",
+          },
+          [
+            h(InputGroup, {
+              id: "density-text-input",
+              placeholder: "Density",
+              value: this.state.formData.density,
+              onChange: updater("density"),
+              intent: getIntent(
+                this.state.formData.density,
+                0,
+                5,
+                "density"
+              ),
+            }),
+          ]
+        ),
+
+        h(
+          FormGroup,
+          {
             helperText: "Atmpspheric pressure in hPa",
             label: "Atmospheric pressure",
           },
@@ -698,7 +742,7 @@ class Form extends Component {
         h(
           "p",
           "Empty field(s): " +
-            (28 - Object.keys(this.state.formData).length).toString()
+            (29 - Object.keys(this.state.formData).length).toString()
         ),
         h(
           "p",
@@ -767,6 +811,8 @@ class Form extends Component {
       quartz_data,
       _9Be_data,
       _10Be_data,
+      density,
+      boulder_height,
       ratio_Be_data;
 
     lat_data = parseFloat(this.state.formData.lat);
@@ -802,6 +848,12 @@ class Form extends Component {
       sigma_data = parseFloat(this.state.formData._1_sigma);
     }
 
+    if (this.state.formData.boulder_height == null) {
+      boulder_height = 0;
+    } else {
+      boulder_height = parseFloat(this.state.formData.boulder_height);
+    }
+
     if (this.state.formData.shielding == null) {
       shielding_data = 0;
     } else {
@@ -832,8 +884,14 @@ class Form extends Component {
       ratio_Be_data = parseFloat(this.state.formData.Be_ratio);
     }
 
+    if (this.state.formData.density == null) {
+      density = null;
+    } else {
+      density = parseFloat(this.state.formData.density);
+    }
+
     if (this.state.formData.atm_pressure == null) {
-      atm_pressure = 0;
+      atm_pressure = null;
     } else {
       atm_pressure = parseFloat(this.state.formData.atm_pressure);
     }
@@ -864,14 +922,15 @@ class Form extends Component {
         //compilation: this.state.formData.compilation,
         //reference: this.state.formData.reference,
         elevation: elevation_data,
+        boulder_height: boulder_height,
         location_name: this.state.formData.location,
         location: {
           type: "Point",
           coordinates: [lon_data, lat_data],
         },
         atm_pressure: atm_pressure,
-        thickness: thickness,
-        depth: depth,
+        // thickness: thickness,
+        // depth: depth,
       },
       analysis: [
         {
@@ -880,11 +939,19 @@ class Form extends Component {
           session_index: this.state.formData.session_index,
           datum: [
             {
-              value: _9Be_data,
+              value: density,
               error: null,
               type: {
-                parameter: "9Be carrier",
-                unit: "",
+                parameter: "Density",
+                unit: "g/cm^3",
+              },
+            },
+            {
+              value: thickness,
+              error: null,
+              type: {
+                parameter: "Thickness",
+                unit: "cm",
               },
             },
             {
@@ -932,14 +999,6 @@ class Form extends Component {
               error: null,
               type: {
                 parameter: "1 Sigma",
-                unit: "none",
-              },
-            },
-            {
-              value: 1,
-              error: null,
-              type: {
-                parameter: "Data source",
                 unit: "none",
               },
             },
