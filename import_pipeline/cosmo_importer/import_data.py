@@ -34,8 +34,8 @@ class CosmoImporter(BaseImporter):
         sample.lab_date=row.loc['Lab_date']
         sample.embargo_name=row.loc['Embargo_date']
         sample.atm_pressure=row.loc['Atm-Pressure']
-        sample.compilation = row.loc['Compilation']
-        sample.reference = row.loc['Reference']
+        #sample.compilation = row.loc['Compilation']
+        #sample.reference = row.loc['Reference']
         sample.thickness = row.loc['Thickn(cm)']
         sample.sample_name = row.loc['Sample']
         sample.group_id = row.loc['Group-ID']
@@ -60,8 +60,13 @@ class CosmoImporter(BaseImporter):
         self.measured_parameters(meas, row)
         #self.model_output(session, row)
 
-
         self.db.session.commit()
+
+        # att = self.attribute(analysis="cosmo", parameter="")
+        # att.sample_id = sample.id
+        # att.compilation = row.loc['Compilation']
+        # att.reference = row.loc['Reference']
+        # self.db.session.commit()
 
     # Be and Al importer
     def measured_parameters(self, meas, row):
@@ -131,6 +136,13 @@ class CosmoImporter(BaseImporter):
             dc.append(val)
             val = self.datum(analysis, 'Publ-Al26-Age', 0, error=0, unit='years')
             dc.append(val)
+
+        v = row.loc['Compilation']
+        val = self.attribute(analysis,"Compilation", v)
+
+        v = row.loc['Reference']
+        val = self.attribute(analysis,"Reference", v)
+
 
 
         analysis.datum_collection = dc

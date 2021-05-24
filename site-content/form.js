@@ -861,8 +861,8 @@ class Form extends Component {
         lab_date: this.state.formData.lab_date,
         lab_standard: this.state.formData.lab_std,
         embargo_date: this.state.formData.embargo_date,
-        compilation: this.state.formData.compilation,
-        reference: this.state.formData.reference,
+        //compilation: this.state.formData.compilation,
+        //reference: this.state.formData.reference,
         elevation: elevation_data,
         location_name: this.state.formData.location,
         location: {
