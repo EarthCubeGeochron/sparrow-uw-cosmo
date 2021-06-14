@@ -1014,7 +1014,7 @@ class Form extends Component {
 
     console.log(JSON.stringify(data));
     try {
-      const res = await put("/api/v1/import-data/session", data);
+      const res = await put("/api/v2/import-data/models/session", data);
       return console.log(res);
     } catch (error) {
       console.error(error);
