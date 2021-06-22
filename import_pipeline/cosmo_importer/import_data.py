@@ -6,6 +6,12 @@ import math
 
 class CosmoImporter(BaseImporter):
     authority = "Cosmo Lab"
+
+    def checknan(data):
+        if math.isnan(data):
+            data = None
+        return data
+
     def import_row(self, row):
         """
         The cosmo case is kinda weird because there tends to be one
@@ -27,36 +33,26 @@ class CosmoImporter(BaseImporter):
         lon = row.loc['Long(DD)']
         lat = row.loc['Lat(DD)']
         sample.location = self.location(lon, lat)
-        sample.elevation=row.loc['Elev(masl)']
+        sample.elevation=checknan(row.loc['Elev(masl)'])
 
         #added fields
-        sample.lab_standard=row.loc['Lab-Std']
-        sample.lab_date=row.loc['Lab_date']
-        sample.embargo_name=row.loc['Embargo_date']
-        sample.atm_pressure=row.loc['Atm-Pressure']
+        sample.lab_standard=checknan(row.loc['Lab-Std'])
+        sample.lab_date=checknan(row.loc['Lab_date'])
+        sample.embargo_name=checknan(row.loc['Embargo_date'])
+        sample.atm_pressure=checknan(row.loc['Atm-Pressure'])
         #sample.compilation = row.loc['Compilation']
         #sample.reference = row.loc['Reference']
-        sample.thickness = row.loc['Thickn(cm)']
-        sample.sample_name = row.loc['Sample']
-        sample.group_id = row.loc['Group-ID']
-        sample.pub_year = row.loc['Publ-year']
-        sample.sample_type = row.loc['Sample-type']
+        sample.thickness = checknan(row.loc['Thickn(cm)'])
+        sample.sample_name = checknan(row.loc['Sample'])
+        sample.group_id = checknan(row.loc['Group-ID'])
+        sample.pub_year = checknan(row.loc['Publ-year'])
+        sample.sample_type = checknan(row.loc['Sample-type'])
 
 
-        depth = row.loc['Borehore-Depth(cm)']
-        if math.isnan(depth):
-            depth = None
-        sample.depth = depth
+        sample.depth  = checknan(row.loc['Borehore-Depth(cm)'])
+        sample.boulder_height = checknan(row.loc['Boulder-Height(cm)'])
+        sample.lab_name=checknan(row.loc['Lab'])
 
-        boulder_height = row.loc['Boulder-Height(cm)']
-        if math.isnan(boulder_height):
-            boulder_height = None
-        sample.boulder_height = boulder_height
-
-        lab_name=row.loc['Lab']
-        if math.isnan(lab_name):
-            lab_name = None
-        sample.lab_name = lab_name
 
         meas = self.models.session()
         #nuclide = row.loc['Nuclide']
