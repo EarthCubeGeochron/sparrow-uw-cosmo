@@ -2,6 +2,7 @@ import pandas as pd
 from datetime import datetime
 from sparrow.import_helpers import BaseImporter
 import sqlalchemy
+import math
 
 class CosmoImporter(BaseImporter):
     authority = "Cosmo Lab"
@@ -29,7 +30,6 @@ class CosmoImporter(BaseImporter):
         sample.elevation=row.loc['Elev(masl)']
 
         #added fields
-        sample.lab_name=row.loc['Lab']
         sample.lab_standard=row.loc['Lab-Std']
         sample.lab_date=row.loc['Lab_date']
         sample.embargo_name=row.loc['Embargo_date']
@@ -37,13 +37,26 @@ class CosmoImporter(BaseImporter):
         #sample.compilation = row.loc['Compilation']
         #sample.reference = row.loc['Reference']
         sample.thickness = row.loc['Thickn(cm)']
-        sample.boulder_height = row.loc['Boulder-Height(cm)']
         sample.sample_name = row.loc['Sample']
-        sample.depth = row.loc['Borehore-Depth(cm)']
         sample.group_id = row.loc['Group-ID']
         sample.pub_year = row.loc['Publ-year']
         sample.sample_type = row.loc['Sample-type']
 
+
+        depth = row.loc['Borehore-Depth(cm)']
+        if math.isnan(depth):
+            depth = None
+        sample.depth = depth
+
+        boulder_height = row.loc['Boulder-Height(cm)']
+        if math.isnan(boulder_height):
+            boulder_height = None
+        sample.boulder_height = boulder_height
+
+        lab_name=row.loc['Lab']
+        if math.isnan(lab_name):
+            lab_name = None
+        sample.lab_name = lab_name
 
         meas = self.models.session()
         #nuclide = row.loc['Nuclide']
