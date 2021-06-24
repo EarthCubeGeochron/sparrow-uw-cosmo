@@ -818,6 +818,17 @@ class Form extends Component {
     lat_data = parseFloat(this.state.formData.lat);
     lon_data = parseFloat(this.state.formData.lon);
 
+    if (lon_data > 180){
+      while (lon_data > 180){
+        lon_data -= 360;
+      }
+    } else if (lon_data < -180) {
+      while (lon_data < -180){
+        lon_data += 360;
+      }
+    }
+
+
     if (this.state.formData.elevation == null) {
       elevation_data = -999;
     } else {
