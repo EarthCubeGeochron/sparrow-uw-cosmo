@@ -199,6 +199,7 @@ class Form extends Component {
     var data = all_markers;
 
     return h("div.form+map", [
+      h("h1", "10Be Data Submission Form"),
       <Map
         center={[40, -100]}
         onClick={this.addMarker}
@@ -316,13 +317,14 @@ class Form extends Component {
               placeholder: "Import Name",
               value: this.state.formData.import_name,
               onChange: updater("import_name"),
+              intent: Intent.PRIMARY,
             }),
           ]
         ),
         h(
           FormGroup,
           {
-            helperText: "Enter the session index",
+            helperText: "Enter the session index.",
             label: "Session",
           },
           [
@@ -354,13 +356,13 @@ class Form extends Component {
         h(
           FormGroup,
           {
-            helperText: "Enter the sample name",
+            helperText: "E.g. PBS-04-05",
             label: "Sample",
           },
           [
             h(InputGroup, {
               id: "sample-text-input",
-              placeholder: "Sample text",
+              placeholder: "Sample name text",
               value: this.state.formData.sample_text,
               onChange: updater("sample_text"),
               intent: Intent.PRIMARY,
@@ -370,7 +372,7 @@ class Form extends Component {
         h(
           FormGroup,
           {
-            helperText: "Enter the sample id",
+            helperText: "Recommannded Sample Unique ID based on aurthor's name and publication year. E.g. Marc2010-01",
             label: "Sample ID",
           },
           [
@@ -378,8 +380,7 @@ class Form extends Component {
               id: "sample-id-input",
               placeholder: "Sample ID",
               value: this.state.formData.sample_id,
-              onChange: updater("sample_id"),
-              intent: Intent.PRIMARY,
+              onChange: updater("sample_id")
             }),
           ]
         ),
@@ -387,7 +388,7 @@ class Form extends Component {
         h(
           FormGroup,
           {
-            helperText: "0-1",
+            helperText: "Shielding factor: 0-1",
             label: "Shielding",
           },
           [
@@ -460,7 +461,7 @@ class Form extends Component {
               intent: getIntent(
                 this.state.formData.boulder_height,
                 0,
-                300,
+                500,
                 "boulder height"
               ),
             }),
@@ -509,16 +510,67 @@ class Form extends Component {
         h(
           FormGroup,
           {
-            helperText: "0-200 grams",
-            label: "Quartz",
+            helperText: "Three-letter string: std, pre, or ant",
+            label: "Pressure handling flag",
           },
           [
             h(InputGroup, {
-              id: "quartz-text-input",
-              placeholder: "Quartz value",
-              value: this.state.formData.quartz,
-              onChange: updater("quartz"),
-              intent: getIntent(this.state.formData.quartz, 0, 200, "quartz"),
+              id: "atm_pressure-text-input",
+              placeholder: "Pressure handling flag",
+              value: this.state.formData.pressure_flag,
+              onChange: updater("pressure_flag"),
+              intent: Intent.PRIMARY,
+            }),
+          ]
+        ),
+
+        h(
+          FormGroup,
+          {
+            helperText: "E.g. boulder",
+            label: "Sample material type",
+          },
+          [
+            h(InputGroup, {
+              id: "sample-type-text-input",
+              placeholder: "Sample material type",
+              value: this.state.formData.sample_type,
+              onChange: updater("sample_type"),
+              intent: Intent.PRIMARY,
+            }),
+          ]
+        ),
+
+        h(
+          FormGroup,
+          {
+            helperText: "E.g. Quartz",
+            label: "Mineral type",
+          },
+          [
+            h(InputGroup, {
+              id: "mineral-type-text-input",
+              placeholder: "Mineral type",
+              value: this.state.formData.mineral_type,
+              onChange: updater("mineral"),
+              intent: Intent.PRIMARY,
+            }),
+          ]
+        ),
+
+        h(
+          FormGroup,
+          {
+            helperText: "0-200 grams",
+            label: "Mineral weight",
+          },
+          [
+            h(InputGroup, {
+              id: "mineral-text-input",
+              placeholder: "Mineral weight",
+              value: this.state.formData.mineral,
+              onChange: updater("mineral"),
+              intent: getIntent(this.state.formData.mineral, 0, 200, "mineral"),
             }),
           ]
         ),
@@ -541,7 +593,7 @@ class Form extends Component {
         h(
           FormGroup,
           {
-            helperText: "1E-10 to 1E-20",
+            helperText: "Usually between 1E-10 and 1E-20",
             label: "10Be/9Be",
           },
           [
@@ -562,7 +614,7 @@ class Form extends Component {
         h(
           FormGroup,
           {
-            helperText: "1E-10 to 1E-20",
+            helperText: "Usually betweenn 1E-10 and 1E-20",
             label: "1 Sigma",
           },
           [
@@ -584,7 +636,7 @@ class Form extends Component {
           FormGroup,
           {
             helperText: "0 to 1E-9 atoms/g",
-            label: "10Be",
+            label: "10Be Concentration",
           },
           [
             h(InputGroup, {
@@ -604,24 +656,8 @@ class Form extends Component {
         h(
           FormGroup,
           {
-            helperText: "0-5000 ka",
-            label: "10Be Age",
-          },
-          [
-            h(InputGroup, {
-              id: "10be-age-text-input",
-              placeholder: "Age value",
-              value: this.state.formData.age,
-              onChange: updater("age"),
-              intent: getIntent(this.state.formData.age, 0, 5000, "age"),
-            }),
-          ]
-        ),
-        h(
-          FormGroup,
-          {
             helperText: "0 to 1E-10, atoms/g",
-            label: "Uncertainty",
+            label: "10Be concentration uncertainty",
           },
           [
             h(InputGroup, {
@@ -638,11 +674,43 @@ class Form extends Component {
             }),
           ]
         ),
+        h(
+          FormGroup,
+          {
+            helperText: "10Be age in ka. Usually under 5000.",
+            label: "10Be Age",
+          },
+          [
+            h(InputGroup, {
+              id: "10be-age-text-input",
+              placeholder: "Age value",
+              value: this.state.formData.age,
+              onChange: updater("age"),
+              intent: getIntent(this.state.formData.age, 0, 5000, "age"),
+            }),
+          ]
+        ),
+        h(
+          FormGroup,
+          {
+            helperText: "10Be age uncertainty in ka.",
+            label: "10Be Age Uncertainty",
+          },
+          [
+            h(InputGroup, {
+              id: "10be-age-unc-text-input",
+              placeholder: "Age Uncertainty",
+              value: this.state.formData.age_unc,
+              onChange: updater("age_unc"),
+              intent: getIntent(this.state.formData.age_unc, 0, 5000, "age_unc"),
+            }),
+          ]
+        ),
         h("h2", "Lab information"),
         h(
           FormGroup,
           {
-            helperText: "Lab name",
+            helperText: "E.g. WiscCosmo",
             label: "Lab name",
           },
           [
@@ -658,8 +726,8 @@ class Form extends Component {
         h(
           FormGroup,
           {
-            helperText: "Lab standard",
-            label: "Lab standard",
+            helperText: 'E.g. 07KNSTD. Refer to <a href = "http://hess.ess.washington.edu/math/docs/al_be_v22/standard_names.html"> this page </a>',
+            label: "AMS standardization",
           },
           [
             h(InputGroup, {
@@ -805,10 +873,11 @@ class Form extends Component {
       uncertainty_data,
       session_index_data,
       age_data,
+      age_unc_data,
       shielding_data,
       elevation_data,
       sigma_data,
-      quartz_data,
+      mineral_data,
       _9Be_data,
       _10Be_data,
       density,
@@ -847,6 +916,12 @@ class Form extends Component {
       age_data = parseFloat(this.state.formData.age);
     }
 
+    if (this.state.formData.age_unc == null) {
+      age_unc_data = -999;
+    } else {
+      age_unc_data = parseFloat(this.state.formData.age_unc);
+    }
+
     if (this.state.formData.uncertainty == null) {
       uncertainty_data = -999;
     } else {
@@ -871,10 +946,10 @@ class Form extends Component {
       shielding_data = parseFloat(this.state.formData.shielding);
     }
 
-    if (this.state.formData.quartz == null) {
-      quartz_data = -999;
+    if (this.state.formData.mineral == null) {
+      mineral_data = -999;
     } else {
-      quartz_data = parseFloat(this.state.formData.quartz);
+      mineral_data = parseFloat(this.state.formData.mineral);
     }
 
     if (this.state.formData._9Be == null) {
@@ -928,11 +1003,13 @@ class Form extends Component {
         name: this.state.formData.sample_text,
         lab_name: this.state.formData.lab_name,
         lab_date: this.state.formData.lab_date,
-        lab_standard: this.state.formData.lab_std,
+        ams_standard: this.state.formData.lab_std,
         embargo_date: this.state.formData.embargo_date,
-        //compilation: this.state.formData.compilation,
-        //reference: this.state.formData.reference,
+        compile: this.state.formData.compilation,
+        reference: this.state.formData.reference,
+        mineral_type: this.state.formData.mineral_type,
         elevation: elevation_data,
+        sample_type: sample_type,
         boulder_height: boulder_height,
         location_name: this.state.formData.location,
         location: {
@@ -940,6 +1017,7 @@ class Form extends Component {
           coordinates: [lon_data, lat_data],
         },
         atm_pressure: atm_pressure,
+        pressure_flag: pressure_flag,
         // thickness: thickness,
         // depth: depth,
       },
@@ -967,7 +1045,7 @@ class Form extends Component {
             },
             {
               value: _10Be_data,
-              error: null,
+              error: uncertainty_data,
               type: {
                 parameter: "10Be",
                 unit: "atoms/g",
@@ -983,7 +1061,7 @@ class Form extends Component {
             },
             {
               value: age_data,
-              error: uncertainty_data,
+              error: age_unc_data,
               type: {
                 parameter: "10Be Age",
                 unit: "ka",
@@ -998,10 +1076,10 @@ class Form extends Component {
               },
             },
             {
-              value: quartz_data,
+              value: mineral_data,
               error: null,
               type: {
-                parameter: "Quartz",
+                parameter: "Mineral weight",
                 unit: "none",
               },
             },
