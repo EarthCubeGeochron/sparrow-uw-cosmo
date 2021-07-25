@@ -493,7 +493,7 @@ class Form extends Component {
         h(
           FormGroup,
           {
-            helperText: "Atmpspheric pressure in hPa",
+            helperText: "Atmospheric pressure in hPa",
             label: "Atmospheric pressure",
           },
           [
