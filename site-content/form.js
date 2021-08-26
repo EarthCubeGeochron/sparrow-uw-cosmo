@@ -199,7 +199,7 @@ class Form extends Component {
     var data = all_markers;
 
     return h("div.form+map", [
-      h("h1", "10Be Data Submission Form"),
+      h("h1", "The 10Be Data Submission Form"),
       <Map
         center={[40, -100]}
         onClick={this.addMarker}
