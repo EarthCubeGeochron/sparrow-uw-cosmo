@@ -26,6 +26,8 @@ export SPARROW_PLUGIN_DIR="$cosmo/backend-plugins"
 
 export SPARROW_BACKUP_DIR="$PROJECT_DIR/backups"
 
+export SPARROW_TASK_WORKER=1
+
 if [ -f "$cosmo/sparrow-config.overrides.sh" ]; then
 	source "$cosmo/sparrow-config.overrides.sh"
 fi

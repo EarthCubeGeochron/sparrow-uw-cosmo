@@ -35,12 +35,12 @@ class CosmoImporter(BaseImporter):
         sample.elevation=checknan(row.loc['Elev(masl)'])
 
         #added fields
-        sample.lab_standard=row.loc['Lab-Std']
+        sample.ams_standard=row.loc['AMS-Std']
         sample.lab_date=row.loc['Lab_date']
         sample.embargo_name=row.loc['Embargo_date']
         sample.atm_pressure=row.loc['Atm-Pressure']
-        #sample.compilation = row.loc['Compilation']
-        #sample.reference = row.loc['Reference']
+        sample.compile = row.loc['Compilation']
+        sample.reference = row.loc['Reference']
         sample.thickness = checknan(row.loc['Thickn(cm)'])
         sample.sample_name = row.loc['Sample']
         sample.group_id = row.loc['Group-ID']
