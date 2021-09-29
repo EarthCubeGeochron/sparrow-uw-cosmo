@@ -2,7 +2,9 @@ cosmo="${SPARROW_CONFIG_DIR:-${0:h}}"
 
 # This is only necessary if another instance of `sparrow`
 # is the default on your system.
-#export SPARROW_PATH="$cosmo/Sparrowiii"
+
+#export SPARROW_PATH="$cosmo/Sparrow"
+
 
 export SPARROW_SECRET_KEY="OrangeTree2019222"
 export MAPBOX_API_TOKEN="pk.eyJ1IjoiZGF2ZW5xdWlubiIsImEiOiJjanZ1eWwxMjAwNmRvM3lzNTNqN2d0OHdzIn0.kmDqABs8gHCaihj8UdnQKg"
