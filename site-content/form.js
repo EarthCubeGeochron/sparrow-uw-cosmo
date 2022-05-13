@@ -1096,6 +1096,12 @@ class Form extends Component {
       ],
     };
 
+    //A function that removes null datums
+    let datums = [...sessionData.analysis.datum]
+
+    let newDatums = datums.filter(datum => datum.value != null) // returns datums where value is NOT NULL
+    sessionData.analysis.datums = newDatums
+
     const data = {
       filename: null,
       data: sessionData,
