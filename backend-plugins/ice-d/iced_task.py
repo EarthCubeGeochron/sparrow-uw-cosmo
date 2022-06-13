@@ -41,12 +41,16 @@ def load_ice_d(redo: bool = False, recreate_thumbnails: bool = False):
         conn.close()
         cnx.close()
 
+
     iced_metadata.join(iced_analytical_data, on='sample_name', how='left', lsuffix='', rsuffix='', sort=False)
     iced_boulder_h = iced_boulder_h[iced_boulder_h["field_name"].isin(["boulder_height_m"])]
     iced_metadata.join(iced_boulder_h, on='sample_name', how='left', lsuffix='', rsuffix='h_', sort=False)
     iced_metadata.join(calc_ages, on='sample_name', how='left', lsuffix='', rsuffix='', sort=False)
 
-    return iced_metadatav
+    #pd.dump  table
+    # SKIP NETWORK REQUEST/REFETCH DATA
+
+    return iced_metadata
 
 class iced_importer(BaseImporter):
     #authority = "Cosmo Lab"
