@@ -37,6 +37,8 @@ def cal(redo: bool = False, recreate_thumbnails: bool = False):
 
     def get_one_sample(sample_name):
 
+        #SELECT * FROM table WHERE...
+
         querystring_metadata =  "SELECT " + str(sample_name) + " FROM sample"
         querystring_datum =  "SELECT " + str(sample_name) + " FROM datum"
         querystring_session =  "SELECT " + str(sample_name) + " FROM session"
